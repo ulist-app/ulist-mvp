@@ -18,9 +18,12 @@
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
+  "homepage": "https://ulist-app.github.io/ulist-mvp/",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && mv build docs",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "test:coverage": "npm t -- --coverage",
     "new:case": "node_modules/.bin/hygen ",
@@ -46,6 +49,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4",
+    "gh-pages": "^4.0.0",
     "sass": "^1.54.9"
   }
 }
