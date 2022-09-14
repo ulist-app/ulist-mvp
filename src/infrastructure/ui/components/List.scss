@@ -1,0 +1,20 @@
+.List {
+  width: 100%;
+
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    padding: 8px;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  .category-name {
+    padding: 8px 16px 0;
+  }
+}
