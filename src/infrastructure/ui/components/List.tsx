@@ -1,13 +1,19 @@
 import {FC} from "react";
-import {Item} from "../../../core";
+import {Id, Item} from "../../../core";
 import {ListItem} from "./ListItem";
 import './List.scss'
 
+type SetItemFunction = (id: Id) => void
+
 interface ItemListProps {
-  items: Item[]
+  items: Item[],
+  setItemAsRequired: SetItemFunction,
+  setItemAsNotRequired: SetItemFunction,
+  setItemAsMandatory: SetItemFunction,
+  setItemAsNotMandatory: SetItemFunction,
 }
 
-export const List: FC<ItemListProps> = ({items}) => {
+export const List: FC<ItemListProps> = ({items, ...useCases}) => {
   const itemsByCategory = items.reduce((dictionary, item) => {
     if (dictionary[item.category.name]) {
       dictionary[item.category.name] = dictionary[item.category.name].concat(item)
@@ -22,7 +28,7 @@ export const List: FC<ItemListProps> = ({items}) => {
         {items.map(item => (
           <ul className="ItemList">
             <li key={item.id.value}>
-              <ListItem item={item}/>
+              <ListItem item={item} {...useCases}/>
             </li>
           </ul>
 

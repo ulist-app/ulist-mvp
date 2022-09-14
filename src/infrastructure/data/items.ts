@@ -29,8 +29,8 @@ export const items: Record<string, RawItem> = {
     category: 'd5559a99-e75c-4ab6-a334-ff4099e6f628',
     name: 'Bastoncillos',
     quantity: 1,
-    isRequired: false,
-    isMandatory: false
+    isRequired: true,
+    isMandatory: true
   },
   'd12df1ef-c618-420f-9614-ea9d80bf0542': {
     id: 'd12df1ef-c618-420f-9614-ea9d80bf0542',

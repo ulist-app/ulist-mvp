@@ -1,0 +1,32 @@
+.Menu {
+  align-items: center;
+  bottom: 24px;
+  display: flex;
+  font-size: 2rem;
+  height: 100px;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    align-items: center;
+    border-radius: 48px;
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  li {
+    border-radius: 50%;
+    font-size: 32px;
+    height: 32px;
+    list-style: none;
+    padding: 8px;
+    width: 32px;
+  }
+}
