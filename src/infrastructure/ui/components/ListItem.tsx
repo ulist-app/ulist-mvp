@@ -6,7 +6,6 @@ import {FcHighPriority, FcLowPriority} from "react-icons/fc";
 
 type SetItemFunction = (id: Id) => void
 
-
 interface ListItemProps {
   item: Item
   setItemAsRequired: SetItemFunction,

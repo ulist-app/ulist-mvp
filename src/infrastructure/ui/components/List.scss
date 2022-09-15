@@ -1,5 +1,6 @@
 .List {
-  width: 100%;
+  margin: 0;
+  padding: 0;
 
   ul, li {
     margin: 0;
@@ -8,6 +9,7 @@
 
   ul {
     padding: 8px;
+    width: calc(100% - 16px);
   }
 
   li {

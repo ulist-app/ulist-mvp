@@ -25,14 +25,13 @@ export const List: FC<ItemListProps> = ({items, ...useCases}) => {
   return <div className="List">
     {Object.entries(itemsByCategory).map(([categoryName, items]) => <>
         <h2 className="category-name">{categoryName}</h2>
-        {items.map(item => (
-          <ul className="ItemList">
+        <ul className="ItemList">
+          {items.map(item => (
             <li key={item.id.value}>
               <ListItem item={item} {...useCases}/>
             </li>
-          </ul>
-
-        ))}
+          ))}
+        </ul>
       </>
     )}
   </div>
