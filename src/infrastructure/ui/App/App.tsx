@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './App.scss';
 import {ItemRepositoryLocalStorage} from "../../repositories/item.repository.local-storage";
 import {
-  GetAllItemsCase, SetItemAsMandatoryCase,
+  GetAllItemsCase,
+  SetItemAsMandatoryCase,
   SetItemAsNotMandatoryCase,
   SetItemAsNotRequiredCase,
   SetItemAsRequiredCase,
@@ -21,16 +22,28 @@ export enum Views {
 function App() {
   const [view, setView] = useState(Views.All)
   const [items, setItems] = useState(new ItemList([]))
+  const [filteredItems, setFilteredItems] = useState(new ItemList([]))
   const [itemsNeedToBeUpdated, setItemsNeedToBeUpdated] = useState(false)
   const setViewAndFetch = (view: Views) => {
     setView(view)
     setItemsNeedToBeUpdated(true)
   }
   const useCases = generateUseCases(setItemsNeedToBeUpdated)
+  const onSearch = (search: string) => {
+    if (search) {
+      const filteredItems = items.getAll()
+        .filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
+      setFilteredItems(new ItemList(filteredItems))
+    } else {
+      setFilteredItems(items)
+    }
+  }
 
   useEffect(() => {
     useCases.getAllItems().then(setItems)
   }, [])
+
+  useEffect(() => setFilteredItems(items), [items])
 
   useEffect(() => {
     if (itemsNeedToBeUpdated) {
@@ -41,13 +54,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        uList
+        🛒 Groceries list 🛒
       </header>
       <main className="App-main">
-        {view === Views.All && <List items={items.getAll()} {...useCases}/>}
-        {view === Views.Required && <List items={items.getAllRequired()} {...useCases}/>}
-        {view === Views.Mandatory && <List items={items.getAllMandatory()} {...useCases}/>}
-        <Menu activeView={view} setView={setViewAndFetch}/>
+        {view === Views.All && <List items={filteredItems.getAll()} {...useCases}/>}
+        {view === Views.Required && <List items={filteredItems.getAllRequired()} {...useCases}/>}
+        {view === Views.Mandatory && <List items={filteredItems.getAllMandatory()} {...useCases}/>}
+        <Menu activeView={view} setView={setViewAndFetch}  onSearch={onSearch}/>
       </main>
     </div>
   );
@@ -56,9 +69,9 @@ function App() {
 function generateUseCases(setItemsNeedToBeUpdated: (needUpdate: boolean) => void) {
   const itemRepository = new ItemRepositoryLocalStorage()
   const withFetch = (useCase: UseCase<any, Promise<any>>) => (args: any) =>
-      useCase.exec
-        .bind(useCase)(args)
-        .then(() => setItemsNeedToBeUpdated(true))
+    useCase.exec
+      .bind(useCase)(args)
+      .then(() => setItemsNeedToBeUpdated(true))
   const getAllItems = new GetAllItemsCase(itemRepository)
   return {
     getAllItems: getAllItems.exec.bind(getAllItems),
