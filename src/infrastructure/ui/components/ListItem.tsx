@@ -1,8 +1,8 @@
 import {FC} from "react";
-import {Id, Item} from "../../../core";
+import {Id, Item, palette} from "../../../core";
 import './ListItem.scss'
-import {BsCartPlus, BsCartX,} from "react-icons/bs";
-import {FcHighPriority, FcLowPriority} from "react-icons/fc";
+import {BsFillStarFill} from "react-icons/bs";
+import {AiFillMinusCircle, AiFillPlusCircle} from "react-icons/ai";
 
 type SetItemFunction = (id: Id) => void
 
@@ -20,14 +20,14 @@ export const ListItem: FC<ListItemProps> = ({ item, ...useCases}) => {
     <span className="item">{item.name}</span>
     <span className="is-required">
       {item.isRequired
-        ? <BsCartX size={32} onClick={() => useCases.setItemAsNotRequired(item.id)}/>
-        : <BsCartPlus size={32} onClick={() => useCases.setItemAsRequired(item.id)}/>
+        ? <AiFillMinusCircle size={32} color={palette.red} onClick={() => useCases.setItemAsNotRequired(item.id)}/>
+        : <AiFillPlusCircle size={32} color={palette.green} onClick={() => useCases.setItemAsRequired(item.id)}/>
       }
     </span>
     <span className="is-mandatory">
       {item.isMandatory
-        ? <FcLowPriority size={32} onClick={() => useCases.setItemAsNotMandatory(item.id)}/>
-        : <FcHighPriority size={32} onClick={() => useCases.setItemAsMandatory(item.id)}/>
+        ? <BsFillStarFill size={32} color={palette.yellow} onClick={() => useCases.setItemAsNotMandatory(item.id)}/>
+        : <BsFillStarFill size={32} color={palette.gray} onClick={() => useCases.setItemAsMandatory(item.id)}/>
       }
     </span>
   </div>
