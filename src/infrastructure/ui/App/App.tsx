@@ -12,7 +12,7 @@ import {
   SetItemAsRequiredCase,
   UseCase
 } from "../../../application";
-import {ItemList} from "../../../core";
+import {ItemList, palette} from "../../../core";
 import {List} from "../components/List";
 import {Menu} from "../components/Menu";
 import {LocalStorageCollection, LocalStorage} from "../../data-sources/LocalStorage/LocalStorage";
@@ -71,8 +71,16 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        🛒 Groceries list 🛒
+      <header
+        className="App-header"
+        style={{
+          backgroundColor: palette.purple,
+          color: palette.white,
+        }}
+      >
+        <h1>
+          🛒 Groceries list 🛒
+        </h1>
       </header>
       <main className="App-main">
         {view === Views.All && <List items={filteredItems.getAll()} {...useCases}/>}
