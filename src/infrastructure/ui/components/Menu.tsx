@@ -21,37 +21,39 @@ export const Menu: FC<MenuProps> = ({setView, activeView, onSearch}) => {
   const getTextColor = (view: Views) => isActive(view) ? palette.purple : 'inherit'
   return (
     <nav className="Menu">
-      {!search &&       <ul style={{backgroundColor: palette.purple, color: palette.white}}>
-        <li
-          style={{backgroundColor: getBackgroundColor(Views.All), color: getTextColor(Views.All)}}
-          onClick={() => setView(Views.All)}
+      <div className={`flip-container${search ? ' active' : ''}`}>
+        <ul
+          style={{backgroundColor: palette.purple, color: palette.white}}
+          className={`flip-front${!search ? ' active' : ''}`}
         >
-          <FiList/>
-        </li>
-        <li
-          style={{backgroundColor: getBackgroundColor(Views.Required), color: getTextColor(Views.Required)}}
-          onClick={() => setView(Views.Required)}
-        >
-          <BsFillCartFill/>
-        </li>
-        <li
-          style={{backgroundColor: getBackgroundColor(Views.Mandatory), color: getTextColor(Views.Mandatory)}}
-          onClick={() => setView(Views.Mandatory)}
-        >
-          <BsFillStarFill/>
-        </li>
-        <li
-          onClick={() => setSearch(true)}
-        >
-          <BsSearch/>
-        </li>
-      </ul>
-      }
-      {search && <div className="search">
-        <button onClick={() => setSearch(false)} className="back"><BiArrowBack/></button>
-        <Search onChange={onSearch}/>
+          <li
+            style={{backgroundColor: getBackgroundColor(Views.All), color: getTextColor(Views.All)}}
+            onClick={() => setView(Views.All)}
+          >
+            <FiList/>
+          </li>
+          <li
+            style={{backgroundColor: getBackgroundColor(Views.Required), color: getTextColor(Views.Required)}}
+            onClick={() => setView(Views.Required)}
+          >
+            <BsFillCartFill/>
+          </li>
+          <li
+            style={{backgroundColor: getBackgroundColor(Views.Mandatory), color: getTextColor(Views.Mandatory)}}
+            onClick={() => setView(Views.Mandatory)}
+          >
+            <BsFillStarFill/>
+          </li>
+          <li
+            onClick={() => setSearch(true)}
+          >
+            <BsSearch/>
+          </li>
+        </ul>
+        <div className={`flip-back${search ? ' active' : ''}`}>
+          <Search onChange={onSearch} onClose={() => setSearch(false)}/>
+        </div>
       </div>
-      }
     </nav>
   )
 }

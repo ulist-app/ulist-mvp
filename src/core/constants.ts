@@ -9,3 +9,5 @@ export const palette = {
   gray: '#999999',
   black: '#000000'
 }
+
+export const buttonSize = '32px'
