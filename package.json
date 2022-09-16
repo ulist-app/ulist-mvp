@@ -58,7 +58,8 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
-      "!src/infrastructure/data",
+      "!src/tests/**",
+      "!src/infrastructure/data/**",
       "!src/index.tsx",
       "!src/reportWebVitals.ts",
       "!<rootDir>/node_modules/"
