@@ -13,17 +13,27 @@ interface ItemListProps {
   setItemAsNotMandatory: SetItemFunction,
 }
 
-export const List: FC<ItemListProps> = ({items, ...useCases}) => {
-  const itemsByCategory = items.reduce((dictionary, item) => {
+function getItemsByCategory(items: Item[]) {
+  return items.reduce((dictionary, item) => {
     if (dictionary[item.category.name]) {
       dictionary[item.category.name] = dictionary[item.category.name].concat(item)
     } else {
       dictionary[item.category.name] = [item]
     }
     return dictionary
-  }, {} as Record<string, Item[]>)
+  }, {} as Record<string, Item[]>);
+}
+
+const EmptyList = () => <div className="List">
+  <p>No hay elementos</p>
+</div>
+
+export const List: FC<ItemListProps> = ({items, ...useCases}) => {
+  if (!items) {
+    return <EmptyList />
+  }
   return <div className="List">
-    {Object.entries(itemsByCategory).map(([categoryName, items]) => <>
+    {Object.entries(getItemsByCategory(items)).map(([categoryName, items]) => <>
         <h2 className="category-name">{categoryName}</h2>
         <ul className="ItemList">
           {items.map(item => (

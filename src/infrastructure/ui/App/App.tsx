@@ -23,31 +23,44 @@ export enum Views {
   Mandatory
 }
 
+function filterItems(items: ItemList, search: string) {
+  const filteredItems = items.getAll()
+    .filter(i => i.name.toLowerCase().includes(search.toLowerCase()));
+  return new ItemList(filteredItems)
+}
+
 function App() {
+  const [lastSearch, setLastSearch] = useState('')
   const [view, setView] = useState(Views.All)
   const [items, setItems] = useState(new ItemList([]))
   const [filteredItems, setFilteredItems] = useState(new ItemList([]))
   const [itemsNeedToBeUpdated, setItemsNeedToBeUpdated] = useState(false)
-  const setViewAndFetch = (view: Views) => {
-    setView(view)
-    setItemsNeedToBeUpdated(true)
-  }
   const useCases = generateUseCases(setItemsNeedToBeUpdated)
-  const onSearch = (search: string) => {
+
+  function updateFilteredItems(search: string) {
     if (search) {
-      const filteredItems = items.getAll()
-        .filter(i => i.name.toLowerCase().includes(search.toLowerCase()))
-      setFilteredItems(new ItemList(filteredItems))
+      setFilteredItems(filterItems(items, search))
     } else {
       setFilteredItems(items)
     }
+  }
+
+  function onSearch(search: string) {
+    setLastSearch(search)
+    updateFilteredItems(search)
   }
 
   useEffect(() => {
     useCases.getAllItems().then(setItems)
   }, [])
 
-  useEffect(() => setFilteredItems(items), [items])
+  useEffect(() => {
+    useCases.getAllItems().then(setItems)
+  }, [view])
+
+  useEffect(() => {
+    updateFilteredItems(lastSearch);
+  }, [items])
 
   useEffect(() => {
     if (itemsNeedToBeUpdated) {
@@ -55,6 +68,7 @@ function App() {
       setItemsNeedToBeUpdated(false)
     }
   }, [itemsNeedToBeUpdated])
+
   return (
     <div className="App">
       <header className="App-header">
@@ -64,7 +78,7 @@ function App() {
         {view === Views.All && <List items={filteredItems.getAll()} {...useCases}/>}
         {view === Views.Required && <List items={filteredItems.getAllRequired()} {...useCases}/>}
         {view === Views.Mandatory && <List items={filteredItems.getAllMandatory()} {...useCases}/>}
-        <Menu activeView={view} setView={setViewAndFetch}  onSearch={onSearch}/>
+        <Menu activeView={view} setView={setView} onSearch={onSearch}/>
       </main>
     </div>
   );

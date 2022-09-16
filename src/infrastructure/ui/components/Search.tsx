@@ -1,19 +1,23 @@
 import React, {ChangeEventHandler, FC, useState} from "react";
 import './Search.scss'
-import {buttonSize, palette} from "../../../core";
+import {buttonSize} from "../../../core";
 import {BiArrowBack} from "react-icons/bi";
 import {BsFillBackspaceFill} from "react-icons/bs";
 
 export const Search: FC<{ onChange: (search: string) => void, onClose: () => void }> = ({onChange, onClose}) => {
   const [search, setSearch] = useState('')
-  const onInputChange: ChangeEventHandler<HTMLInputElement> = ({currentTarget}) => {
-    const value = currentTarget.value.trim()
+  function emitChange(value: string) {
     setSearch(value)
     onChange(value)
   }
+
+  const onInputChange: ChangeEventHandler<HTMLInputElement> = ({currentTarget}) => {
+    const value = currentTarget.value.trim()
+    emitChange(value);
+  }
   const handleClick = () => {
     if (search) {
-      setSearch('')
+      emitChange('')
     } else {
       onClose()
     }
