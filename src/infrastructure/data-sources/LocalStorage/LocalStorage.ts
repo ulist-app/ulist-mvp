@@ -1,9 +1,13 @@
 import {LocalStorageDataSource} from "./LocalStorageDataSource";
 
+export enum LocalStorageCollection {
+  Items = 'ulist:items'
+}
+
 export class LocalStorage<T> implements LocalStorageDataSource<T> {
   constructor(private readonly collection: string) {}
 
-  get(): T {
+  get(): T | null {
     const item = localStorage.getItem(this.collection);
     const numPatt = new RegExp(/^\d+$/);
     const jsonPatt = new RegExp(/[\[\{].*[\}\]]/);
@@ -21,7 +25,7 @@ export class LocalStorage<T> implements LocalStorageDataSource<T> {
         return item as T;
       }
     } else {
-      return null as T;
+      return null;
     }
 
   }

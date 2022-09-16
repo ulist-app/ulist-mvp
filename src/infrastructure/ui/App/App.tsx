@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import './App.scss';
-import {ItemRepositoryLocalStorage} from "../../repositories/item.repository.local-storage";
+import {
+  ItemRepositoryLocalStorage,
+  LocalStorageItemRecord
+} from "../../repositories/item-repository/item-repository.local-storage";
 import {
   GetAllItemsCase,
   SetItemAsMandatoryCase,
@@ -12,6 +15,7 @@ import {
 import {ItemList} from "../../../core";
 import {List} from "../components/List";
 import {Menu} from "../components/Menu";
+import {LocalStorageCollection, LocalStorage} from "../../data-sources/LocalStorage/LocalStorage";
 
 export enum Views {
   All,
@@ -67,7 +71,7 @@ function App() {
 }
 
 function generateUseCases(setItemsNeedToBeUpdated: (needUpdate: boolean) => void) {
-  const itemRepository = new ItemRepositoryLocalStorage()
+  const itemRepository = new ItemRepositoryLocalStorage(new LocalStorage<LocalStorageItemRecord>(LocalStorageCollection.Items))
   const withFetch = (useCase: UseCase<any, Promise<any>>) => (args: any) =>
     useCase.exec
       .bind(useCase)(args)

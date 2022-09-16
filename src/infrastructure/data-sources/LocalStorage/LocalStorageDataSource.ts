@@ -1,5 +1,5 @@
 export interface LocalStorageDataSource<T> {
-  get(): T;
+  get(): T | null;
 
   set(item: T): void;
 }

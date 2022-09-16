@@ -1,15 +1,16 @@
-import {LocalStorage} from "../LocalStorage";
-import {ItemRepository} from "../../application";
-import {Category, Id, Item, ItemList} from "../../core";
-import {items, RawItem} from "../data/items";
-import {categories, RawCategory} from "../data/categories";
+import {ItemRepository} from "../../../application";
+import {Category, Id, Item, ItemList} from "../../../core";
+import {items, RawItem} from "../../data/items";
+import {categories, RawCategory} from "../../data/categories";
+import {LocalStorageDataSource} from "../../data-sources/LocalStorage/LocalStorageDataSource";
 
-type LocalStorageItem = Omit<RawItem, 'category'> & {
+export type LocalStorageItem = Omit<RawItem, 'category'> & {
   category: RawCategory
 }
+export type LocalStorageItemRecord = Record<string, LocalStorageItem>
 
 export class ItemRepositoryLocalStorage implements ItemRepository {
-  constructor(private readonly localStorage = new LocalStorage<Record<string, LocalStorageItem>>('ulist:items')) {}
+  constructor(private readonly localStorage: LocalStorageDataSource<LocalStorageItemRecord>) {}
 
   async findById(id: Id): Promise<Item> {
     return this.getItems()[id.value]
