@@ -1,6 +1,6 @@
 import React, {ChangeEventHandler, FC, useState} from "react";
 import './Search.scss'
-import {buttonSize} from "../../../core";
+import {buttonSize} from "../../../../core";
 import {BiArrowBack} from "react-icons/bi";
 import {BsFillBackspaceFill} from "react-icons/bs";
 
@@ -26,13 +26,13 @@ export const Search: FC<{ onChange: (search: string) => void, onClose: () => voi
   return (
     <div className="Search">
       <input
+        title='Search'
         type="text"
         value={search}
-        autoFocus={true}
         onChange={onInputChange}
         placeholder="🔍 Search"
       />
-      <button onClick={handleClick}>
+      <button onClick={handleClick} title={search ? 'Reset search' : 'Close search'}>
         {search && <BsFillBackspaceFill size={buttonSize}/>}
         {!search && <BiArrowBack size={buttonSize}/>}
       </button>
