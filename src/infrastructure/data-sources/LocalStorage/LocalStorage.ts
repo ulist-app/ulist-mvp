@@ -1,4 +1,6 @@
-export class LocalStorage<T> {
+import {LocalStorageDataSource} from "./LocalStorageDataSource";
+
+export class LocalStorage<T> implements LocalStorageDataSource<T> {
   constructor(private readonly collection: string) {}
 
   get(): T {
@@ -11,6 +13,10 @@ export class LocalStorage<T> {
         return JSON.parse(item);
       } else if (numPatt.test(item)) {
         return parseFloat(item) as T;
+      } else if (item === 'true') {
+        return true as T;
+      } else if (item === 'false') {
+        return false as T;
       } else {
         return item as T;
       }
@@ -26,9 +32,5 @@ export class LocalStorage<T> {
     } else {
       localStorage.setItem(this.collection, item as string);
     }
-  }
-
-  remove() {
-    localStorage.removeItem(this.collection);
   }
 }
