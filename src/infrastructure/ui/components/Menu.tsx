@@ -5,7 +5,6 @@ import {BsFillCartFill, BsFillStarFill, BsSearch} from "react-icons/bs";
 import {FiList} from "react-icons/fi";
 import {palette} from "../../../core";
 import {Search} from "./Search";
-import {BiArrowBack} from "react-icons/bi";
 
 
 interface MenuProps {
@@ -13,7 +12,6 @@ interface MenuProps {
   activeView: Views;
   onSearch: (search: string) => void
 }
-
 export const Menu: FC<MenuProps> = ({setView, activeView, onSearch}) => {
   const [search, setSearch] = useState(false)
   const isActive = (view: Views) => view === activeView
@@ -26,31 +24,28 @@ export const Menu: FC<MenuProps> = ({setView, activeView, onSearch}) => {
           style={{backgroundColor: palette.purple, color: palette.white}}
           className={`flip-front${!search ? ' active' : ''}`}
         >
-          <li
-            style={{backgroundColor: getBackgroundColor(Views.All), color: getTextColor(Views.All)}}
-            onClick={() => setView(Views.All)}
-          >
-            <FiList/>
+          <li style={{backgroundColor: getBackgroundColor(Views.All), color: getTextColor(Views.All)}}>
+            <button onClick={() => setView(Views.All)} data-testid="Menu-nav-all">
+              <FiList/>
+            </button>
           </li>
-          <li
-            style={{backgroundColor: getBackgroundColor(Views.Required), color: getTextColor(Views.Required)}}
-            onClick={() => setView(Views.Required)}
-          >
-            <BsFillCartFill/>
+          <li style={{backgroundColor: getBackgroundColor(Views.Required), color: getTextColor(Views.Required)}}>
+            <button onClick={() => setView(Views.Required)} data-testid="Menu-nav-required">
+              <BsFillCartFill/>
+            </button>
           </li>
-          <li
-            style={{backgroundColor: getBackgroundColor(Views.Mandatory), color: getTextColor(Views.Mandatory)}}
-            onClick={() => setView(Views.Mandatory)}
-          >
-            <BsFillStarFill/>
+          <li style={{backgroundColor: getBackgroundColor(Views.Mandatory), color: getTextColor(Views.Mandatory)}}>
+            <button onClick={() => setView(Views.Mandatory)} data-testid="Menu-nav-mandatory">
+              <BsFillStarFill/>
+            </button>
           </li>
-          <li
-            onClick={() => setSearch(true)}
-          >
-            <BsSearch/>
+          <li>
+            <button onClick={() => setSearch(true)} data-testid="Menu-nav-search">
+              <BsSearch/>
+            </button>
           </li>
         </ul>
-        <div className={`flip-back${search ? ' active' : ''}`}>
+        <div className={`flip-back${search ? ' active' : ''}`} data-testid="Menu-search-bar">
           <Search onChange={onSearch} onClose={() => setSearch(false)}/>
         </div>
       </div>
