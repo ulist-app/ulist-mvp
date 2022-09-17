@@ -26,13 +26,13 @@ export const Search: FC<{ onChange: (search: string) => void, onClose: () => voi
   return (
     <div className="Search">
       <input
-        title='Search'
+        data-testid='Search-input'
         type="text"
         value={search}
         onChange={onInputChange}
         placeholder="🔍 Search"
       />
-      <button onClick={handleClick} title={search ? 'Reset search' : 'Close search'}>
+      <button onClick={handleClick} data-testid='Search-button'>
         {search && <BsFillBackspaceFill size={buttonSize}/>}
         {!search && <BiArrowBack size={buttonSize}/>}
       </button>
