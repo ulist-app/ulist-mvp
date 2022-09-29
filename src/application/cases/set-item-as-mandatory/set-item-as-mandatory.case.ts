@@ -11,7 +11,8 @@ export class SetItemAsMandatoryCase implements UseCase<Input, Output> {
     const item = await this.itemsRepository.findById(id)
     await this.itemsRepository.save({
       ...item,
-      isMandatory: true
+      isMandatory: true,
+      isRequired: true
     })
   }
 }
