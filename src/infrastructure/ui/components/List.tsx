@@ -33,7 +33,7 @@ export const List: FC<ItemListProps> = ({items, ...useCases}) => {
     return <EmptyList />
   }
   return <div className="List">
-    {Object.entries(getItemsByCategory(items)).map(([categoryName, items]) => <>
+    {Object.entries(getItemsByCategory(items)).map(([categoryName, items]) => <div key={categoryName}>
         <h2 className="category-name">{categoryName}</h2>
         <ul className="ItemList">
           {items.map(item => (
@@ -42,7 +42,7 @@ export const List: FC<ItemListProps> = ({items, ...useCases}) => {
             </li>
           ))}
         </ul>
-      </>
+      </div>
     )}
   </div>
 }

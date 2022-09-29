@@ -1,7 +1,7 @@
 import { Id } from '../id'
 import { palette } from '../../constants'
 
-interface CategoryParams {
+export interface CategoryParams {
   id?: Id
   name?: string
   color?: string

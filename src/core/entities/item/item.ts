@@ -1,7 +1,7 @@
 import { Id } from '../id'
 import {Category, defaultCategory} from "../category";
 
-interface ItemParams {
+export interface ItemParams {
   id?: Id
   name?: string
   category?: Category
@@ -25,5 +25,5 @@ export class Item {
     this.isRequired = isRequired ?? false
     this.isMandatory = isMandatory ?? false
     this.quantity = quantity ?? 1
-  } 
+  }
 }
