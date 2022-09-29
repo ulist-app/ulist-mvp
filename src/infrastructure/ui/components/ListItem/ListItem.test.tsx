@@ -6,8 +6,8 @@ import {buildListItemProps, useCases} from "./testHelper";
 
 describe('List item should', () => {
   it.each([
-    ((props) => ({label: props.item.name, props}))(buildListItemProps()),
-    ((props) => ({label: props.item.quantity, props}))(buildListItemProps()),
+    ((props) => ({attr: 'name', label: props.item.name, props}))(buildListItemProps()),
+    ((props) => ({attr: 'quantity', label: props.item.quantity, props}))(buildListItemProps()),
   ])('show item $attr', ({label, props}) => {
     render(<ListItem {...props}/>);
 
