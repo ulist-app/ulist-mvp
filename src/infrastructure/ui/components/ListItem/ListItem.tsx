@@ -7,10 +7,10 @@ import {AiFillMinusCircle, AiFillPlusCircle} from "react-icons/ai";
 type SetItemFunction = (id: Id) => void
 
 export const messages = {
-  setItemAsRequired: 'Set item as required',
-  setItemAsNotRequired: 'Set item as not required',
-  setItemAsMandatory: 'Set item as mandatory',
-  setItemAsNotMandatory: 'Set item as not mandatory',
+  setItemAsRequired: 'Set item to buy',
+  setItemAsNotRequired: 'Remove item from buy list',
+  setItemAsMandatory: 'Set item as mandatory to buy',
+  setItemAsNotMandatory: 'Remove item from mandatory to buy list',
 }
 
 export interface ListItemProps {
