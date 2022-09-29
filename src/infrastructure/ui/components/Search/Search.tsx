@@ -4,7 +4,18 @@ import {buttonSize} from "../../../../core";
 import {BiArrowBack} from "react-icons/bi";
 import {BsFillBackspaceFill} from "react-icons/bs";
 
-export const Search: FC<{ onChange: (search: string) => void, onClose: () => void }> = ({onChange, onClose}) => {
+export interface SearchProps {
+  onChange: (search: string) => void;
+  onClose: () => void;
+}
+
+export const messages = {
+  searchInput: '🔍 Search',
+  resetCTA: 'Reset your search',
+  closeCTA: 'Close search'
+}
+
+export const Search: FC<SearchProps> = ({onChange, onClose}) => {
   const [search, setSearch] = useState('')
   function emitChange(value: string) {
     setSearch(value)
@@ -26,13 +37,13 @@ export const Search: FC<{ onChange: (search: string) => void, onClose: () => voi
   return (
     <div className="Search">
       <input
-        data-testid='Search-input'
+        aria-label={messages.searchInput}
         type="text"
         value={search}
         onChange={onInputChange}
-        placeholder="🔍 Search"
+        placeholder={messages.searchInput}
       />
-      <button onClick={handleClick} data-testid='Search-button'>
+      <button aria-label={search ? messages.resetCTA : messages.closeCTA} onClick={handleClick}>
         {search && <BsFillBackspaceFill size={buttonSize}/>}
         {!search && <BiArrowBack size={buttonSize}/>}
       </button>

@@ -1,6 +1,6 @@
 import {render, screen} from "@testing-library/react";
 import React from "react";
-import {Search} from "./Search";
+import {messages, Search} from "./Search";
 import userEvent from "@testing-library/user-event";
 
 describe('Search input should', () => {
@@ -9,7 +9,7 @@ describe('Search input should', () => {
     const props = {onChange: jest.fn(), onClose: jest.fn()}
     render(<Search {...props}/>);
 
-    const search = screen.getByTestId('Search-input');
+    const search = screen.getByLabelText(messages.searchInput);
     userEvent.type(search, text)
 
     expect(props.onChange).toHaveBeenCalledWith(text);
@@ -19,7 +19,7 @@ describe('Search input should', () => {
     const props = {onChange: jest.fn(), onClose: jest.fn()}
     render(<Search {...props}/>);
 
-    const closeButton = screen.getByTestId('Search-button');
+    const closeButton = screen.getByLabelText(messages.closeCTA);
     userEvent.click(closeButton)
 
     expect(props.onClose).toHaveBeenCalledTimes(1);
@@ -30,10 +30,10 @@ describe('Search input should', () => {
     const props = {onChange: jest.fn(), onClose: jest.fn()}
     render(<Search {...props}/>);
 
-    const search = screen.getByTestId('Search-input');
+    const search = screen.getByLabelText(messages.searchInput);
     userEvent.type(search, text)
     expect(search.outerHTML).toContain(`value="${text}"`);
-    const resetButton = screen.getByTestId('Search-button');
+    const resetButton = screen.getByLabelText(messages.resetCTA);
     userEvent.click(resetButton)
 
     expect(search.outerHTML).toContain('value=""');
