@@ -11,6 +11,10 @@
 
   span {
     display: block;
+    button {
+      background: transparent;
+      border: none;
+    }
   }
 
   .is-required, .is-mandatory {
