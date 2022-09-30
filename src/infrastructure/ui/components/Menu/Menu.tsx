@@ -1,10 +1,15 @@
 import React, {FC, useState} from "react";
 import './Menu.scss'
-import {Views} from "../../App/App";
 import {BsFillCartFill, BsFillStarFill, BsSearch} from "react-icons/bs";
 import {FiList} from "react-icons/fi";
 import {palette} from "../../../../domain";
 import {Search} from "../Search";
+
+export enum Views {
+  All,
+  Required,
+  Mandatory
+}
 
 export interface MenuProps {
   setView: (view: Views) => void;

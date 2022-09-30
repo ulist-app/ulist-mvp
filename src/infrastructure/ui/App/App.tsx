@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.scss';
 import {
-  ItemRepositoryLocalStorage,
-  LocalStorageItemRecord
-} from "../../repositories/item-repository/item-repository.local-storage";
-import {
   GetAllItemsCase,
   SetItemAsMandatoryCase,
   SetItemAsNotMandatoryCase,
@@ -14,21 +10,24 @@ import {
 } from "../../../application";
 import {ItemList, palette} from "../../../domain";
 import {List} from "../components/List";
-import {Menu} from "../components/Menu";
-import {LocalStorageCollection, LocalStorage} from "../../data-sources/LocalStorage/LocalStorage";
+import {Menu, Views} from "../components/Menu";
 
-export enum Views {
-  All,
-  Required,
-  Mandatory
+interface AppUseCases {
+  getAllItems: GetAllItemsCase
+  setItemAsRequired: SetItemAsRequiredCase,
+  setItemAsNotRequired: SetItemAsNotRequiredCase,
+  setItemAsMandatory: SetItemAsMandatoryCase,
+  setItemAsNotMandatory: SetItemAsNotMandatoryCase,
 }
 
-function App() {
+export interface AppProps extends AppUseCases{}
+
+function App({...appUseCases}: AppProps) {
   const [lastSearch, setLastSearch] = useState('')
   const [view, setView] = useState(Views.All)
   const [items, setItems] = useState(new ItemList([]))
   const [itemsNeedToBeUpdated, setItemsNeedToBeUpdated] = useState(false)
-  const useCases = generateUseCases(setItemsNeedToBeUpdated)
+  const useCases = triggerFetchAfterExecUseCase(appUseCases, setItemsNeedToBeUpdated)
 
   function onSearch(search: string) {
     setLastSearch(search)
@@ -72,19 +71,17 @@ function App() {
   );
 }
 
-function generateUseCases(setItemsNeedToBeUpdated: (needUpdate: boolean) => void) {
-  const itemRepository = new ItemRepositoryLocalStorage(new LocalStorage<LocalStorageItemRecord>(LocalStorageCollection.Items))
+function triggerFetchAfterExecUseCase(useCases: AppUseCases, setItemsNeedToBeUpdated: (needUpdate: boolean) => void) {
   const withFetch = (useCase: UseCase<any, Promise<any>>) => (args: any) =>
     useCase.exec
       .bind(useCase)(args)
       .then(() => setItemsNeedToBeUpdated(true))
-  const getAllItems = new GetAllItemsCase(itemRepository)
   return {
-    getAllItems: getAllItems.exec.bind(getAllItems),
-    setItemAsRequired: withFetch(new SetItemAsRequiredCase(itemRepository)),
-    setItemAsNotRequired: withFetch(new SetItemAsNotRequiredCase(itemRepository)),
-    setItemAsMandatory: withFetch(new SetItemAsMandatoryCase(itemRepository)),
-    setItemAsNotMandatory: withFetch(new SetItemAsNotMandatoryCase(itemRepository)),
+    getAllItems: useCases.getAllItems.exec.bind(useCases.getAllItems),
+    setItemAsRequired: withFetch(useCases.setItemAsRequired),
+    setItemAsNotRequired: withFetch(useCases.setItemAsNotRequired),
+    setItemAsMandatory: withFetch(useCases.setItemAsMandatory),
+    setItemAsNotMandatory: withFetch(useCases.setItemAsNotMandatory),
   }
 }
 

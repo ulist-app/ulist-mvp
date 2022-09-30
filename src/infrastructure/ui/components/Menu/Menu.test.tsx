@@ -1,5 +1,4 @@
-import {Views} from "../../App/App";
-import {Menu, MenuProps, messages} from "./Menu";
+import {Menu, MenuProps, messages, Views} from "./Menu";
 import {render, screen} from "@testing-library/react";
 import {messages as searchMessages} from '../Search'
 import userEvent from "@testing-library/user-event";
@@ -17,9 +16,9 @@ describe('Menu should', () => {
     screen.getByLabelText(label)
   });
   it.each([
-    {action: 'go to all items list', label: messages.allItemsListCTA, expectedView: Views.All},
-    {action: 'go to buy list', label: messages.requiredListCTA, expectedView: Views.Required},
-    {action: 'go to mandatory buy list', label: messages.mandatoryListCTA, expectedView: Views.Mandatory},
+    {action: 'send user to all items list', label: messages.allItemsListCTA, expectedView: Views.All},
+    {action: 'send user to buy list', label: messages.requiredListCTA, expectedView: Views.Required},
+    {action: 'send user to mandatory buy list', label: messages.mandatoryListCTA, expectedView: Views.Mandatory},
   ])('$action', ({label, expectedView}) => {
     const props = buildMenuProps()
     render(<Menu {...props}/>)
