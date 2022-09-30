@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Id, Item, ItemList} from "../../../../core";
+import {Id, Item, ItemList} from "../../../../domain";
 import {ListItem} from "../ListItem";
 import './List.scss'
 

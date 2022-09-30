@@ -1,5 +1,5 @@
 import {ItemRepository} from "../../../application";
-import {Category, Id, Item, ItemList} from "../../../core";
+import {Category, Id, Item, ItemList} from "../../../domain";
 import {items, RawItem} from "../../data/items";
 import {categories, RawCategory} from "../../data/categories";
 import {LocalStorageDataSource} from "../../data-sources/LocalStorage/LocalStorageDataSource";

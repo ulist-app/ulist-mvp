@@ -1,7 +1,7 @@
 import {ItemRepositoryLocalStorage, LocalStorageItem, LocalStorageItemRecord} from "./item-repository.local-storage";
 import {LocalStorageDouble} from "../../../tests/doubles/LocalStorageDouble";
 import {items} from "../../../tests/fixtures/items";
-import {Category, Id, Item, ItemList} from "../../../core";
+import {Category, Id, Item, ItemList} from "../../../domain";
 
 
 describe('Item repository should', () => {

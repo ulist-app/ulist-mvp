@@ -3,7 +3,7 @@ import './Menu.scss'
 import {Views} from "../../App/App";
 import {BsFillCartFill, BsFillStarFill, BsSearch} from "react-icons/bs";
 import {FiList} from "react-icons/fi";
-import {palette} from "../../../../core";
+import {palette} from "../../../../domain";
 import {Search} from "../Search";
 
 export interface MenuProps {

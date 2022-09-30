@@ -12,7 +12,7 @@ import {
   SetItemAsRequiredCase,
   UseCase
 } from "../../../application";
-import {ItemList, palette} from "../../../core";
+import {ItemList, palette} from "../../../domain";
 import {List} from "../components/List";
 import {Menu} from "../components/Menu";
 import {LocalStorageCollection, LocalStorage} from "../../data-sources/LocalStorage/LocalStorage";

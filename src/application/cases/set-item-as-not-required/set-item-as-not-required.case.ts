@@ -1,5 +1,5 @@
 import {UseCase} from "../use-case";
-import {Id} from "../../../core";
+import {Id} from "../../../domain";
 import {ItemRepository} from "../../repositories";
 
 type Input = Id;

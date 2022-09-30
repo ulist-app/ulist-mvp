@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Id, Item, palette} from "../../../../core";
+import {Id, Item, palette} from "../../../../domain";
 import './ListItem.scss'
 import {BsFillStarFill} from "react-icons/bs";
 import {AiFillMinusCircle, AiFillPlusCircle} from "react-icons/ai";

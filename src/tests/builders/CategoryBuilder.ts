@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker";
-import {Category, CategoryParams, Id} from "../../core";
+import {Category, CategoryParams, Id} from "../../domain";
 
 export class CategoryBuilder {
 

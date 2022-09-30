@@ -1,5 +1,5 @@
 import {ItemRepository} from "../../repositories";
-import {ItemList} from "../../../core";
+import {ItemList} from "../../../domain";
 import {GetAllItemsCase} from "./get-all-items.case";
 import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 

@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker";
-import {Category, Id, Item, ItemParams} from "../../core";
+import {Category, Id, Item, ItemParams} from "../../domain";
 import {CategoryBuilder} from "./CategoryBuilder";
 
 export class ItemBuilder {

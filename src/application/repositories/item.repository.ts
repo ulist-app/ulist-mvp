@@ -1,4 +1,4 @@
-import {Id, Item, ItemList} from '../../core'
+import {Id, Item, ItemList} from '../../domain'
 
 export interface ItemRepository {
   findById(id: Id): Promise<Item>

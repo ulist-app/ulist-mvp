@@ -1,6 +1,6 @@
 import React, {ChangeEventHandler, FC, useState} from "react";
 import './Search.scss'
-import {buttonSize} from "../../../../core";
+import {buttonSize} from "../../../../domain";
 import {BiArrowBack} from "react-icons/bi";
 import {BsFillBackspaceFill} from "react-icons/bs";
 
