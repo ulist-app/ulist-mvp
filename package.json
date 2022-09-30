@@ -35,7 +35,10 @@
       "react-app",
       "react-app/jest",
       "plugin:jsx-a11y/recommended"
-    ]
+    ],
+    "rules": {
+      "testing-library/no-unnecessary-act": 0
+    }
   },
   "browserslist": {
     "production": [
