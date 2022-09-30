@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {act, render, screen, waitForElementToBeRemoved} from '@testing-library/react';
+import {act, render, screen, waitFor, waitForElementToBeRemoved, within} from '@testing-library/react';
 import App, {AppProps} from './App';
 import {
   GetAllItemsCase,
@@ -10,27 +10,27 @@ import {
 } from "../../../application";
 import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 import {ItemList} from "../../../domain";
-import Mock = jest.Mock;
 import userEvent from "@testing-library/user-event";
 import {messages} from "../../../messages";
+import {GetAllItemsCaseDouble} from "../../../tests/doubles/GetAllItemsCaseDouble";
 
 describe('Groceries list App should', () => {
 
   it('renders app name', () => {
-      renderAndAct(<App {...buildAppProps()} />);
+    renderAndAct(<App {...buildAppProps()} />);
 
     screen.getByText(/Groceries list/);
   });
 
   it('fetch items and render them', async () => {
     const items = new ItemList(Array.from({length: 3}).map(ItemBuilder.random));
-    const getAllItemsExecSpy = jest.fn(async () => items);
+    const getAllItemsDouble = new GetAllItemsCaseDouble([items])
 
-    renderAndAct(<App {...buildAppProps({getAllItems: getAllItemsExecSpy})} />);
+    renderAndAct(<App {...buildAppProps({getAllItems: getAllItemsDouble})} />);
     const emptyList = screen.queryByText(messages.emptyList);
     await waitForElementToBeRemoved(emptyList)
 
-    expect(getAllItemsExecSpy).toHaveBeenCalled()
+    getAllItemsDouble.assertHasBeenCalled()
     for (const item of items.getAll()) {
       screen.getByText(item.name);
     }
@@ -42,17 +42,114 @@ describe('Groceries list App should', () => {
       ItemBuilder.init().withName('cookies').build(),
       ItemBuilder.init().withName('cream').build(),
     ]);
-    const getAllItemsExecSpy = jest.fn(async () => items);
+    const getAllItemsDouble = new GetAllItemsCaseDouble([items])
 
-    renderAndAct(<App {...buildAppProps({getAllItems: getAllItemsExecSpy})} />);
+    renderAndAct(<App {...buildAppProps({getAllItems: getAllItemsDouble})} />);
     const emptyList = screen.queryByText(messages.emptyList);
     await waitForElementToBeRemoved(emptyList)
     userEvent.click(screen.getByLabelText(messages.menu.searchCTA))
     userEvent.type(screen.getByLabelText(messages.search.searchInput), 'm')
 
-      screen.getByText(items.getAll().at(0)!.name);
-      screen.getByText(items.getAll().at(2)!.name);
+    screen.getByText(items.getAll().at(0)!.name);
+    screen.getByText(items.getAll().at(2)!.name);
+    expect(screen.queryByText(items.getAll().at(1)!.name)).not.toBeInTheDocument()
   });
+
+  it('set item to buy and render it updated', async () => {
+    const items = new ItemList([
+      ItemBuilder.init().withName('milk').withIsRequired(false).build(),
+      ItemBuilder.init().withName('cookies').build(),
+      ItemBuilder.init().withName('cream').build(),
+    ]);
+    const itemsUpdated = new ItemList([
+      ItemBuilder.clone(items.getAll().at(0)!).withIsRequired(true).build(),
+      ItemBuilder.clone(items.getAll().at(1)!).build(),
+      ItemBuilder.clone(items.getAll().at(2)!).build(),
+    ]);
+    const [item] = items.getAll()
+    const getAllItemsDouble = new GetAllItemsCaseDouble([items, itemsUpdated])
+    const props = buildAppProps({getAllItems: getAllItemsDouble})
+
+    renderAndAct(<App {...props} />);
+    await waitForElementToBeRemoved(screen.queryByText(messages.emptyList))
+    act(() => {
+      const firstItem = screen.getByTestId(item.id.value)
+      userEvent.click(within(firstItem).getByLabelText(messages.actions.setItemAsRequired))
+    })
+
+    expect(props.setItemAsRequired.exec).toHaveBeenCalledTimes(1)
+    await waitFor(() => getAllItemsDouble.assertHasBeenCalledTimes(2))
+    const firstItemUpdated = screen.getByTestId(item.id.value)
+    expect(within(firstItemUpdated).queryByLabelText(messages.actions.setItemAsRequired)).toBeNull()
+  });
+
+  it('set item mandatory to buy and render it updated', async () => {
+    const items = new ItemList([
+      ItemBuilder.init().withName('milk').withIsMandatory(false).build(),
+      ItemBuilder.init().withName('cookies').build(),
+      ItemBuilder.init().withName('cream').build(),
+    ]);
+    const itemsUpdated = new ItemList([
+      ItemBuilder.clone(items.getAll().at(0)!).withIsMandatory(true).build(),
+      ItemBuilder.clone(items.getAll().at(1)!).build(),
+      ItemBuilder.clone(items.getAll().at(2)!).build(),
+    ]);
+    const [item] = items.getAll()
+    const getAllItemsDouble = new GetAllItemsCaseDouble([items, itemsUpdated])
+    const props = buildAppProps({getAllItems: getAllItemsDouble})
+
+    renderAndAct(<App {...props} />);
+    await waitForElementToBeRemoved(screen.queryByText(messages.emptyList))
+    act(() => {
+      const firstItem = screen.getByTestId(item.id.value)
+      userEvent.click(within(firstItem).getByLabelText(messages.actions.setItemAsMandatory))
+    })
+
+    expect(props.setItemAsMandatory.exec).toHaveBeenCalledTimes(1)
+    await waitFor(() => getAllItemsDouble.assertHasBeenCalledTimes(2))
+    const firstItemUpdated = screen.getByTestId(item.id.value)
+    expect(within(firstItemUpdated).queryByLabelText(messages.actions.setItemAsMandatory)).toBeNull()
+  });
+
+  it('navigate to buy list', async () => {
+    const items = new ItemList([
+      ItemBuilder.init().withName('milk').withIsRequired(true).build(),
+      ItemBuilder.init().withName('cookies').withIsRequired(false).build(),
+      ItemBuilder.init().withName('cream').withIsRequired(false).build(),
+    ]);
+    const getAllItemsDouble = new GetAllItemsCaseDouble([items])
+    const props = buildAppProps({getAllItems: getAllItemsDouble})
+
+    renderAndAct(<App {...props} />);
+    await waitForElementToBeRemoved(screen.queryByText(messages.emptyList))
+    act(() => {
+      userEvent.click(screen.getByLabelText(messages.menu.requiredListCTA))
+    })
+
+    screen.getByText(items.getAll().at(0)!.name);
+    expect(screen.queryByText(items.getAll().at(1)!.name)).not.toBeInTheDocument()
+    expect(screen.queryByText(items.getAll().at(2)!.name)).not.toBeInTheDocument()
+  })
+
+  it('navigate to mandatory buy list', async () => {
+    const items = new ItemList([
+      ItemBuilder.init().withName('milk').withIsRequired(true).withIsMandatory(false).build(),
+      ItemBuilder.init().withName('cookies').withIsRequired(true).withIsMandatory(true).build(),
+      ItemBuilder.init().withName('cream').withIsRequired(false).build(),
+    ]);
+    const getAllItemsDouble = new GetAllItemsCaseDouble([items])
+    const props = buildAppProps({getAllItems: getAllItemsDouble})
+
+    renderAndAct(<App {...props} />);
+    await waitForElementToBeRemoved(screen.queryByText(messages.emptyList))
+    act(() => {
+      userEvent.click(screen.getByLabelText(messages.menu.mandatoryListCTA))
+    })
+
+    screen.getByText(items.getAll().at(1)!.name);
+    expect(screen.queryByText(items.getAll().at(0)!.name)).not.toBeInTheDocument()
+    expect(screen.queryByText(items.getAll().at(2)!.name)).not.toBeInTheDocument()
+  })
 });
 
 
@@ -62,12 +159,9 @@ function buildAppProps({
                          setItemAsNotRequired,
                          setItemAsMandatory,
                          setItemAsNotMandatory,
-                       }: Partial<Record<keyof AppProps, Mock>> = {}): AppProps {
+                       }: Partial<Record<keyof AppProps, { exec: Function }>> = {}): AppProps {
   return {
-    getAllItems: {
-      exec: getAllItems || jest.fn(async () => {
-      })
-    } as unknown as GetAllItemsCase,
+    getAllItems: (getAllItems || new GetAllItemsCaseDouble()) as unknown as GetAllItemsCase,
     setItemAsRequired: {
       exec: setItemAsRequired || jest.fn(async () => {
       })

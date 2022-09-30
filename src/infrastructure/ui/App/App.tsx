@@ -36,10 +36,6 @@ function App(props: AppProps) {
 
   useEffect(() => {
     useCases.getAllItems().then(setItems)
-  }, [])
-
-  useEffect(() => {
-    useCases.getAllItems().then(setItems)
   }, [view])
 
   useEffect(() => {

@@ -22,6 +22,10 @@ export class ItemBuilder {
     return new ItemBuilder()
   }
 
+  static clone(item: Item): ItemBuilder {
+    return new ItemBuilder({...item})
+  }
+
   withName(name: string): ItemBuilder {
     this.name = name
     return this
