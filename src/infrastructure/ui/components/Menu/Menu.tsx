@@ -4,6 +4,7 @@ import {BsFillCartFill, BsFillStarFill, BsSearch} from "react-icons/bs";
 import {FiList} from "react-icons/fi";
 import {palette} from "../../../../domain";
 import {Search} from "../Search";
+import {messages} from "../../../../messages";
 
 export enum Views {
   All,
@@ -15,13 +16,6 @@ export interface MenuProps {
   setView: (view: Views) => void;
   activeView: Views;
   onSearch: (search: string) => void
-}
-
-export const messages = {
-  requiredListCTA: 'Show items to buy',
-  mandatoryListCTA: 'Show mandatory items to buy',
-  allItemsListCTA: 'Show all items',
-  searchCTA: 'Search items'
 }
 
 export const Menu: FC<MenuProps> = ({setView, activeView, onSearch}) => {
@@ -41,22 +35,22 @@ export const Menu: FC<MenuProps> = ({setView, activeView, onSearch}) => {
             className={`flip-front${!search ? ' active' : ''}`}
           >
             <li style={{backgroundColor: getBackgroundColor(Views.All), color: getTextColor(Views.All)}}>
-              <button aria-label={messages.allItemsListCTA} onClick={() => setView(Views.All)}>
+              <button aria-label={messages.menu.allItemsListCTA} onClick={() => setView(Views.All)}>
                 <FiList/>
               </button>
             </li>
             <li style={{backgroundColor: getBackgroundColor(Views.Required), color: getTextColor(Views.Required)}}>
-              <button aria-label={messages.requiredListCTA} onClick={() => setView(Views.Required)}>
+              <button aria-label={messages.menu.requiredListCTA} onClick={() => setView(Views.Required)}>
                 <BsFillCartFill/>
               </button>
             </li>
             <li style={{backgroundColor: getBackgroundColor(Views.Mandatory), color: getTextColor(Views.Mandatory)}}>
-              <button aria-label={messages.mandatoryListCTA} onClick={() => setView(Views.Mandatory)}>
+              <button aria-label={messages.menu.mandatoryListCTA} onClick={() => setView(Views.Mandatory)}>
                 <BsFillStarFill/>
               </button>
             </li>
             <li>
-              <button aria-label={messages.searchCTA} onClick={() => setSearch(true)}>
+              <button aria-label={messages.menu.searchCTA} onClick={() => setSearch(true)}>
                 <BsSearch/>
               </button>
             </li>

@@ -9,9 +9,10 @@ import {
   SetItemAsRequiredCase
 } from "../../../application";
 import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
-import {messages} from "../components/List";
 import {ItemList} from "../../../domain";
 import Mock = jest.Mock;
+import userEvent from "@testing-library/user-event";
+import {messages} from "../../../messages";
 
 describe('Groceries list App should', () => {
 
@@ -22,7 +23,7 @@ describe('Groceries list App should', () => {
   });
 
   it('fetch items and render them', async () => {
-    const items = new ItemList(Array.from({length: 5}).map(ItemBuilder.random));
+    const items = new ItemList(Array.from({length: 3}).map(ItemBuilder.random));
     const getAllItemsExecSpy = jest.fn(async () => items);
 
     renderAndAct(<App {...buildAppProps({getAllItems: getAllItemsExecSpy})} />);
@@ -33,6 +34,24 @@ describe('Groceries list App should', () => {
     for (const item of items.getAll()) {
       screen.getByText(item.name);
     }
+  });
+
+  it('filter items by search', async () => {
+    const items = new ItemList([
+      ItemBuilder.init().withName('milk').build(),
+      ItemBuilder.init().withName('cookies').build(),
+      ItemBuilder.init().withName('cream').build(),
+    ]);
+    const getAllItemsExecSpy = jest.fn(async () => items);
+
+    renderAndAct(<App {...buildAppProps({getAllItems: getAllItemsExecSpy})} />);
+    const emptyList = screen.queryByText(messages.emptyList);
+    await waitForElementToBeRemoved(emptyList)
+    userEvent.click(screen.getByLabelText(messages.menu.searchCTA))
+    userEvent.type(screen.getByLabelText(messages.search.searchInput), 'm')
+
+      screen.getByText(items.getAll().at(0)!.name);
+      screen.getByText(items.getAll().at(2)!.name);
   });
 });
 

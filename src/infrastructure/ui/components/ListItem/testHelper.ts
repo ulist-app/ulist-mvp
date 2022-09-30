@@ -1,5 +1,6 @@
-import {ListItemProps, messages} from "./ListItem";
+import {ListItemProps} from "./ListItem";
 import {ItemBuilder} from "../../../../tests/builders/ItemBuilder";
+import {messages} from "../../../../messages";
 
 export function buildListItemProps(item = ItemBuilder.random()): ListItemProps {
   return {
@@ -14,29 +15,29 @@ export function buildListItemProps(item = ItemBuilder.random()): ListItemProps {
 export const useCases = [
   ((props) => ({
     status: 'mandatory',
-    label: messages.setItemAsMandatory,
-    opositeLabel: messages.setItemAsNotMandatory,
+    label: messages.actions.setItemAsMandatory,
+    opositeLabel: messages.actions.setItemAsNotMandatory,
     useCase: props.setItemAsMandatory,
     props
   }))(buildListItemProps(ItemBuilder.init().withIsMandatory(false).build())),
   ((props) => ({
     status: 'not mandatory',
-    label: messages.setItemAsNotMandatory,
-    opositeLabel: messages.setItemAsMandatory,
+    label: messages.actions.setItemAsNotMandatory,
+    opositeLabel: messages.actions.setItemAsMandatory,
     useCase: props.setItemAsNotMandatory,
     props
   }))(buildListItemProps(ItemBuilder.init().withIsMandatory(true).build())),
   ((props) => ({
     status: 'required',
-    label: messages.setItemAsRequired,
-    opositeLabel: messages.setItemAsNotRequired,
+    label: messages.actions.setItemAsRequired,
+    opositeLabel: messages.actions.setItemAsNotRequired,
     useCase: props.setItemAsRequired,
     props
   }))(buildListItemProps(ItemBuilder.init().withIsRequired(false).build())),
   ((props) => ({
     status: 'not required',
-    label: messages.setItemAsNotRequired,
-    opositeLabel: messages.setItemAsRequired,
+    label: messages.actions.setItemAsNotRequired,
+    opositeLabel: messages.actions.setItemAsRequired,
     useCase: props.setItemAsNotRequired,
     props
   }))(buildListItemProps(ItemBuilder.init().withIsRequired(true).build())),

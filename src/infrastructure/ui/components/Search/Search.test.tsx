@@ -1,7 +1,8 @@
 import {render, screen} from "@testing-library/react";
 import React from "react";
-import {messages, Search} from "./Search";
+import {Search} from "./Search";
 import userEvent from "@testing-library/user-event";
+import {messages} from "../../../../messages";
 
 describe('Search input should', () => {
   it('emit input changes', () => {
@@ -9,7 +10,7 @@ describe('Search input should', () => {
     const props = {onChange: jest.fn(), onClose: jest.fn()}
     render(<Search {...props}/>);
 
-    const search = screen.getByLabelText(messages.searchInput);
+    const search = screen.getByLabelText(messages.search.searchInput);
     userEvent.type(search, text)
 
     expect(props.onChange).toHaveBeenCalledWith(text);
@@ -19,7 +20,7 @@ describe('Search input should', () => {
     const props = {onChange: jest.fn(), onClose: jest.fn()}
     render(<Search {...props}/>);
 
-    const closeButton = screen.getByLabelText(messages.closeCTA);
+    const closeButton = screen.getByLabelText(messages.search.closeCTA);
     userEvent.click(closeButton)
 
     expect(props.onClose).toHaveBeenCalledTimes(1);
@@ -30,10 +31,10 @@ describe('Search input should', () => {
     const props = {onChange: jest.fn(), onClose: jest.fn()}
     render(<Search {...props}/>);
 
-    const search = screen.getByLabelText(messages.searchInput);
+    const search = screen.getByLabelText(messages.search.searchInput);
     userEvent.type(search, text)
     expect(search.outerHTML).toContain(`value="${text}"`);
-    const resetButton = screen.getByLabelText(messages.resetCTA);
+    const resetButton = screen.getByLabelText(messages.search.resetCTA);
     userEvent.click(resetButton)
 
     expect(search.outerHTML).toContain('value=""');

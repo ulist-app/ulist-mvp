@@ -1,14 +1,14 @@
-import {Menu, MenuProps, messages, Views} from "./Menu";
+import {Menu, MenuProps, Views} from "./Menu";
 import {render, screen} from "@testing-library/react";
-import {messages as searchMessages} from '../Search'
 import userEvent from "@testing-library/user-event";
+import {messages} from "../../../../messages";
 
 describe('Menu should', () => {
   it.each([
-    {action: 'go to all items list', label: messages.allItemsListCTA},
-    {action: 'go to buy list', label: messages.requiredListCTA},
-    {action: 'go to mandatory buy list', label: messages.mandatoryListCTA},
-    {action: 'enable search', label: messages.searchCTA},
+    {action: 'go to all items list', label: messages.menu.allItemsListCTA},
+    {action: 'go to buy list', label: messages.menu.requiredListCTA},
+    {action: 'go to mandatory buy list', label: messages.menu.mandatoryListCTA},
+    {action: 'enable search', label: messages.menu.searchCTA},
   ])('show an option for $action', ({label}) => {
     const props = buildMenuProps()
     render(<Menu {...props}/>)
@@ -16,9 +16,9 @@ describe('Menu should', () => {
     screen.getByLabelText(label)
   });
   it.each([
-    {action: 'send user to all items list', label: messages.allItemsListCTA, expectedView: Views.All},
-    {action: 'send user to buy list', label: messages.requiredListCTA, expectedView: Views.Required},
-    {action: 'send user to mandatory buy list', label: messages.mandatoryListCTA, expectedView: Views.Mandatory},
+    {action: 'send user to all items list', label: messages.menu.allItemsListCTA, expectedView: Views.All},
+    {action: 'send user to buy list', label: messages.menu.requiredListCTA, expectedView: Views.Required},
+    {action: 'send user to mandatory buy list', label: messages.menu.mandatoryListCTA, expectedView: Views.Mandatory},
   ])('$action', ({label, expectedView}) => {
     const props = buildMenuProps()
     render(<Menu {...props}/>)
@@ -32,16 +32,16 @@ describe('Menu should', () => {
     const props = buildMenuProps()
     render(<Menu {...props}/>)
 
-    expect(screen.queryByLabelText(searchMessages.searchInput)).toBeNull()
+    expect(screen.queryByLabelText(messages.search.searchInput)).toBeNull()
   })
 
   it('search items if search is enabled', () => {
     const props = buildMenuProps()
     render(<Menu {...props}/>)
 
-    userEvent.click(screen.getByLabelText(messages.searchCTA))
+    userEvent.click(screen.getByLabelText(messages.menu.searchCTA))
 
-   screen.getByLabelText(searchMessages.searchInput)
+    screen.getByLabelText(messages.search.searchInput)
   })
 });
 

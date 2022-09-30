@@ -2,6 +2,7 @@ import {FC} from "react";
 import {Id, Item, ItemList} from "../../../../domain";
 import {ListItem} from "../ListItem";
 import './List.scss'
+import {messages} from "../../../../messages";
 
 type SetItemFunction = (id: Id) => void
 
@@ -11,10 +12,6 @@ export interface ListProps {
   setItemAsNotRequired: SetItemFunction,
   setItemAsMandatory: SetItemFunction,
   setItemAsNotMandatory: SetItemFunction,
-}
-
-export const messages = {
-  emptyList:'There is no items in this list',
 }
 
 const EmptyList = () => <div className="List">

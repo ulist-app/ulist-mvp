@@ -3,15 +3,9 @@ import {Id, Item, palette} from "../../../../domain";
 import './ListItem.scss'
 import {BsFillStarFill} from "react-icons/bs";
 import {AiFillMinusCircle, AiFillPlusCircle} from "react-icons/ai";
+import {messages} from "../../../../messages";
 
 type SetItemFunction = (id: Id) => void
-
-export const messages = {
-  setItemAsRequired: 'Set item to buy',
-  setItemAsNotRequired: 'Remove item from buy list',
-  setItemAsMandatory: 'Set item as mandatory to buy',
-  setItemAsNotMandatory: 'Remove item from mandatory to buy list',
-}
 
 export interface ListItemProps {
   item: Item
@@ -27,17 +21,17 @@ export const ListItem: FC<ListItemProps> = ({item, ...useCases}) => {
     <span className="item">{item.name}</span>
     <span className="is-required">
       {item.isRequired
-        ? <AiFillMinusCircle aria-label={messages.setItemAsNotRequired} size={32} color={palette.red}
+        ? <AiFillMinusCircle aria-label={messages.actions.setItemAsNotRequired} size={32} color={palette.red}
                              onClick={() => useCases.setItemAsNotRequired(item.id)}/>
-        : <AiFillPlusCircle aria-label={messages.setItemAsRequired} size={32} color={palette.green}
+        : <AiFillPlusCircle aria-label={messages.actions.setItemAsRequired} size={32} color={palette.green}
                             onClick={() => useCases.setItemAsRequired(item.id)}/>
       }
     </span>
     <span className="is-mandatory">
       {item.isMandatory
-        ? <BsFillStarFill aria-label={messages.setItemAsNotMandatory} size={32} color={palette.yellow}
+        ? <BsFillStarFill aria-label={messages.actions.setItemAsNotMandatory} size={32} color={palette.yellow}
                           onClick={() => useCases.setItemAsNotMandatory(item.id)}/>
-        : <BsFillStarFill aria-label={messages.setItemAsMandatory} size={32} color={palette.gray}
+        : <BsFillStarFill aria-label={messages.actions.setItemAsMandatory} size={32} color={palette.gray}
                           onClick={() => useCases.setItemAsMandatory(item.id)}/>
       }
     </span>

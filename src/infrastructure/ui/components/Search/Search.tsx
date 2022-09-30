@@ -3,16 +3,11 @@ import './Search.scss'
 import {buttonSize} from "../../../../domain";
 import {BiArrowBack} from "react-icons/bi";
 import {BsFillBackspaceFill} from "react-icons/bs";
+import {messages} from "../../../../messages";
 
 export interface SearchProps {
   onChange: (search: string) => void;
   onClose: () => void;
-}
-
-export const messages = {
-  searchInput: '🔍 Search',
-  resetCTA: 'Reset your search',
-  closeCTA: 'Close search'
 }
 
 export const Search: FC<SearchProps> = ({onChange, onClose}) => {
@@ -37,13 +32,13 @@ export const Search: FC<SearchProps> = ({onChange, onClose}) => {
   return (
     <div className="Search">
       <input
-        aria-label={messages.searchInput}
+        aria-label={messages.search.searchInput}
         type="text"
         value={search}
         onChange={onInputChange}
-        placeholder={messages.searchInput}
+        placeholder={messages.search.searchInput}
       />
-      <button aria-label={search ? messages.resetCTA : messages.closeCTA} onClick={handleClick}>
+      <button aria-label={search ? messages.search.resetCTA : messages.search.closeCTA} onClick={handleClick}>
         {search && <BsFillBackspaceFill size={buttonSize}/>}
         {!search && <BiArrowBack size={buttonSize}/>}
       </button>
