@@ -3,7 +3,7 @@ import {SetItemAsNotMandatoryCase} from "./set-item-as-not-mandatory.case";
 import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 
 describe('Set item as not mandatory use case should', () => {
-  it('set item properties isMandatory and buy to false', async () => {
+  it('set item properties isMandatory to false', async () => {
     const item = ItemBuilder.init().withIsMandatory(true).withIsRequired(true).build()
     const itemsRepository = {
       findById: jest.fn(async () => item),
@@ -14,8 +14,7 @@ describe('Set item as not mandatory use case should', () => {
 
     expect(itemsRepository.save).toHaveBeenCalledWith({
       ...item,
-      isMandatory: false,
-      isRequired: false
+      isMandatory: false
     })
   })
 })
