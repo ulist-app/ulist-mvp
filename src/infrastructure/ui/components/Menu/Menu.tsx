@@ -1,10 +1,11 @@
-import React, {FC, useState} from "react";
+import React, {FC, useCallback, useState} from "react";
 import './Menu.scss'
 import {BsFillCartFill, BsFillStarFill, BsSearch} from "react-icons/bs";
 import {FiList} from "react-icons/fi";
 import {palette} from "../../../../domain";
 import {Search} from "../Search";
 import {messages} from "../../../../messages";
+import classNames from "classnames";
 
 export enum Views {
   All,
@@ -20,19 +21,20 @@ export interface MenuProps {
 
 export const Menu: FC<MenuProps> = ({setView, activeView, onSearch}) => {
   const [search, setSearch] = useState(false)
+  const onClose = useCallback(() => setSearch(false), [setSearch])
   const isActive = (view: Views) => view === activeView
   const getBackgroundColor = (view: Views) => isActive(view) ? palette.yellow : 'transparent'
   const getTextColor = (view: Views) => isActive(view) ? palette.purple : 'inherit'
   return (
     <nav className="Menu">
-      <div className={`flip-container${search ? ' active' : ''}`}>
+      <div className={classNames('flip-container', {active: search})}>
         {search
-          ? <div className={`flip-back${search ? ' active' : ''}`}>
-            <Search onChange={onSearch} onClose={() => setSearch(false)}/>
+          ? <div className={classNames('flip-back', {active: search})}>
+            <Search onChange={onSearch} onClose={onClose}/>
           </div>
           : <ul
             style={{backgroundColor: palette.purple, color: palette.white}}
-            className={`flip-front${!search ? ' active' : ''}`}
+            className={classNames('flip-front', {active: !search})}
           >
             <li style={{backgroundColor: getBackgroundColor(Views.All), color: getTextColor(Views.All)}}>
               <button aria-label={messages.menu.allItemsListCTA} onClick={() => setView(Views.All)}>

@@ -36,12 +36,25 @@ describe('Menu should', () => {
   })
 
   it('search items if search is enabled', () => {
+    const text = 'irrelevant'
     const props = buildMenuProps()
     render(<Menu {...props}/>)
 
     userEvent.click(screen.getByLabelText(messages.menu.searchCTA))
+    userEvent.type(screen.getByLabelText(messages.search.searchInput), text)
 
+    expect(props.onSearch).toHaveBeenCalledWith(text)
+  })
+
+  it('disable search', () => {
+    const props = buildMenuProps()
+    render(<Menu {...props}/>)
+
+    userEvent.click(screen.getByLabelText(messages.menu.searchCTA))
     screen.getByLabelText(messages.search.searchInput)
+    userEvent.click(screen.getByLabelText(messages.search.closeCTA))
+
+    expect(screen.queryByLabelText(messages.search.searchInput)).not.toBeInTheDocument()
   })
 });
 
