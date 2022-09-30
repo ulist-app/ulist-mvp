@@ -1,7 +1,8 @@
 import {ItemList} from './item-list'
 import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
+import {CategoryBuilder} from "../../../tests/builders/CategoryBuilder";
 
-describe('ListItem List should', () => {
+describe('Item List should', () => {
   const items = [
     ItemBuilder.init().withName('Milk').withIsRequired(true).withIsMandatory(false).build(),
     ItemBuilder.init().withName('Cookies').withIsRequired(true).withIsMandatory(true).build(),
@@ -30,5 +31,20 @@ describe('ListItem List should', () => {
       expect(new ItemList(items).search('')).toStrictEqual(new ItemList(items))
     })
   })
+
+  it('group items by category', () => {
+    const categoryA = CategoryBuilder.random()
+    const categoryB = CategoryBuilder.random()
+    const items = [
+      ItemBuilder.init().withCategory(categoryA).build(),
+      ItemBuilder.init().withCategory(categoryA).build(),
+      ItemBuilder.init().withCategory(categoryB).build()
+    ]
+
+    expect(ItemList.groupItemsByCategory(items)).toStrictEqual([
+      [categoryA.name, [items.at(0), items.at(1)]],
+      [categoryB.name, [items.at(2)]]
+    ])
+  });
 
 })

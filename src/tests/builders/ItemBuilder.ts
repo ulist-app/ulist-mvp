@@ -27,6 +27,11 @@ export class ItemBuilder {
     return this
   }
 
+  withCategory(category: Category): ItemBuilder {
+    this.category = category
+    return this
+  }
+
   withIsMandatory(isMandatory: boolean): ItemBuilder {
     this.isMandatory = isMandatory
     return this
