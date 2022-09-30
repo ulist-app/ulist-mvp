@@ -1,6 +1,6 @@
+import {ItemBuilder} from "../../../tests/builders";
 import {ItemRepository} from "../../repositories";
 import {SetItemAsMandatoryCase} from "./set-item-as-mandatory.case";
-import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 
 describe('Set item as mandatory use case should', () => {
   it('set item isMandatory and isRequired properties to true', async () => {

@@ -1,5 +1,5 @@
-import {ItemRepository} from "../../repositories";
 import {Item} from "../../../domain";
+import {ItemRepository} from "../../repositories";
 import {SetItemAsRequiredCase} from "./set-item-as-required.case";
 
 describe('Set item as required use case should', () => {

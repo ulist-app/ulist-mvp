@@ -1,4 +1,4 @@
-import {LocalStorageDataSource} from "./LocalStorageDataSource";
+import {LocalStorageDataSource} from "./local-storage.data-source";
 
 export enum LocalStorageCollection {
   Items = 'ulist:items'

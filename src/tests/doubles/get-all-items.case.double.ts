@@ -1,6 +1,6 @@
 import {UseCase} from "../../application";
 import {ItemList} from "../../domain";
-import {ItemBuilder} from "../builders/ItemBuilder";
+import {ItemBuilder} from "../builders";
 
 export class GetAllItemsCaseDouble implements UseCase<void, Promise<ItemList>> {
   private execCount = -1

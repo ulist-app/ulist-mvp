@@ -1,7 +1,7 @@
-import {Menu, MenuProps, Views} from "./Menu";
 import {render, screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {messages} from "../../../../messages";
+import {Menu, MenuProps, Views} from "./Menu";
 
 describe('Menu should', () => {
   it.each([

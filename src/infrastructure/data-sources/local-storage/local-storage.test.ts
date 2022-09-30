@@ -1,4 +1,4 @@
-import {LocalStorage} from "./LocalStorage";
+import {LocalStorage} from "./local-storage";
 
 describe('Local storage abstraction should', () => {
   const collection = 'test'

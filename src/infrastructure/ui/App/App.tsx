@@ -9,8 +9,7 @@ import {
   UseCase
 } from "../../../application";
 import {ItemList, palette} from "../../../domain";
-import {List} from "../components/List";
-import {Menu, Views} from "../components/Menu";
+import {List, Menu, Views} from "../components";
 
 interface AppUseCases {
   getAllItems: GetAllItemsCase

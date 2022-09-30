@@ -1,6 +1,6 @@
 import React, {ReactElement} from 'react';
+import userEvent from "@testing-library/user-event";
 import {act, render, screen, waitFor, waitForElementToBeRemoved, within} from '@testing-library/react';
-import App, {AppProps} from './App';
 import {
   GetAllItemsCase,
   SetItemAsMandatoryCase,
@@ -8,11 +8,11 @@ import {
   SetItemAsNotRequiredCase,
   SetItemAsRequiredCase
 } from "../../../application";
-import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 import {ItemList} from "../../../domain";
-import userEvent from "@testing-library/user-event";
 import {messages} from "../../../messages";
-import {GetAllItemsCaseDouble} from "../../../tests/doubles/GetAllItemsCaseDouble";
+import {ItemBuilder} from "../../../tests/builders";
+import {GetAllItemsCaseDouble} from "../../../tests/doubles";
+import App, {AppProps} from './App';
 
 describe('Groceries list App should', () => {
 

@@ -1,6 +1,6 @@
+import { palette } from '../../constants'
 import { Id } from '../id'
 import { Category } from './category'
-import { palette } from '../../constants'
 
 describe('Category should', () => {
   describe('be created', () => {

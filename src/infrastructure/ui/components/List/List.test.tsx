@@ -1,7 +1,7 @@
-import {ItemBuilder} from "../../../../tests/builders/ItemBuilder";
-import {List, ListProps} from "./List";
 import {render, screen} from "@testing-library/react";
+import {ItemBuilder} from "../../../../tests/builders";
 import {messages} from "../../../../messages";
+import {List, ListProps} from "./List";
 
 describe('List should', () => {
   it('show a list of items separated by categories', () => {

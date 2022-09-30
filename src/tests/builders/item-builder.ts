@@ -1,6 +1,6 @@
 import {faker} from "@faker-js/faker";
 import {Category, Id, Item, ItemParams} from "../../domain";
-import {CategoryBuilder} from "./CategoryBuilder";
+import {CategoryBuilder} from "./category-builder";
 
 export class ItemBuilder {
   private id: Id

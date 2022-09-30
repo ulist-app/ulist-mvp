@@ -1,6 +1,6 @@
-import { Item } from './item'
-import { Id } from '../id'
 import {Category, defaultCategory} from "../category";
+import { Id } from '../id'
+import { Item } from './item'
 
 describe('ListItem should', () => {
   const itemParams = {

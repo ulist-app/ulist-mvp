@@ -6,8 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import {
   ItemRepositoryLocalStorage,
   LocalStorageItemRecord
-} from "./infrastructure/repositories/item-repository/item-repository.local-storage";
-import {LocalStorage, LocalStorageCollection} from "./infrastructure/data-sources/LocalStorage/LocalStorage";
+} from "./infrastructure/repositories";
+import {LocalStorage, LocalStorageCollection} from "./infrastructure/data-sources";
 import {
   GetAllItemsCase,
   SetItemAsMandatoryCase, SetItemAsNotMandatoryCase,

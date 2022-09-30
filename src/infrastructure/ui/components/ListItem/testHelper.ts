@@ -1,6 +1,6 @@
 import {ListItemProps} from "./ListItem";
-import {ItemBuilder} from "../../../../tests/builders/ItemBuilder";
 import {messages} from "../../../../messages";
+import {ItemBuilder} from "../../../../tests/builders";
 
 export function buildListItemProps(item = ItemBuilder.random()): ListItemProps {
   return {

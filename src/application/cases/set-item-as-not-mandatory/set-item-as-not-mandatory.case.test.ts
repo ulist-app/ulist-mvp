@@ -1,6 +1,6 @@
+import {ItemBuilder} from "../../../tests/builders";
 import {ItemRepository} from "../../repositories";
 import {SetItemAsNotMandatoryCase} from "./set-item-as-not-mandatory.case";
-import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 
 describe('Set item as not mandatory use case should', () => {
   it('set item properties isMandatory to false', async () => {

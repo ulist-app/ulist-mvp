@@ -1,8 +1,7 @@
 import {ItemRepository} from "../../../application";
 import {Category, Id, Item, ItemList} from "../../../domain";
-import {items, RawItem} from "../../data/items";
-import {categories, RawCategory} from "../../data/categories";
-import {LocalStorageDataSource} from "../../data-sources/LocalStorage/LocalStorageDataSource";
+import {categories, items, RawCategory, RawItem} from "../../data";
+import {LocalStorageDataSource} from "../../data-sources";
 
 export type LocalStorageItem = Omit<RawItem, 'category'> & {
   category: RawCategory

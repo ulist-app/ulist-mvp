@@ -1,6 +1,5 @@
+import {ItemBuilder, CategoryBuilder} from "../../../tests/builders";
 import {ItemList} from './item-list'
-import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
-import {CategoryBuilder} from "../../../tests/builders/CategoryBuilder";
 
 describe('Item List should', () => {
   const items = [

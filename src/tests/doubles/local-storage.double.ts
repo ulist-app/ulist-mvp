@@ -1,4 +1,4 @@
-import {LocalStorageDataSource} from "../../infrastructure/data-sources/LocalStorage/LocalStorageDataSource";
+import {LocalStorageDataSource} from "../../infrastructure/data-sources";
 
 interface LocalStorageDoubleParams {
   onGet?: any
