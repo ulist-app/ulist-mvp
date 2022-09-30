@@ -11,7 +11,7 @@ export class ItemBuilder {
   private quantity: number
   private constructor ({ id, name, category, isRequired, isMandatory, quantity }: ItemParams = {}) {
     this.id = id || new Id();
-    this.name = name || faker.random.word()
+    this.name = name || faker.random.words()
     this.category = category || CategoryBuilder.random()
     this.isRequired = isRequired ?? faker.datatype.boolean()
     this.isMandatory = isMandatory ?? faker.datatype.boolean()

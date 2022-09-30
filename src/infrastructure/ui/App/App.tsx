@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import './App.scss';
 import {
   GetAllItemsCase,
@@ -20,14 +20,15 @@ interface AppUseCases {
   setItemAsNotMandatory: SetItemAsNotMandatoryCase,
 }
 
-export interface AppProps extends AppUseCases{}
+export interface AppProps extends AppUseCases {
+}
 
-function App({...appUseCases}: AppProps) {
+function App(props: AppProps) {
   const [lastSearch, setLastSearch] = useState('')
   const [view, setView] = useState(Views.All)
   const [items, setItems] = useState(new ItemList([]))
   const [itemsNeedToBeUpdated, setItemsNeedToBeUpdated] = useState(false)
-  const useCases = triggerFetchAfterExecUseCase(appUseCases, setItemsNeedToBeUpdated)
+  const useCases = useMemo(() => triggerFetchAfterExecUseCase(props, setItemsNeedToBeUpdated), [props])
 
   function onSearch(search: string) {
     setLastSearch(search)
