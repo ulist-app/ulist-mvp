@@ -1,24 +1,10 @@
 import {ItemRepository} from "../../repositories";
-import {Item} from "../../../core";
 import {SetItemAsNotRequiredCase} from "./set-item-as-not-required.case";
+import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 
 describe('Set item as not required use case should', () => {
-  it('set item property isRequired to false', async () => {
-    const item = new Item({isRequired: true})
-    const itemsRepository = {
-      findById: jest.fn(async () => item),
-      save: jest.fn()
-    } as unknown as ItemRepository
-
-    await new SetItemAsNotRequiredCase(itemsRepository).exec(item.id)
-
-    expect(itemsRepository.save).toHaveBeenCalledWith({
-      ...item,
-      isRequired: false
-    })
-  })
-  it('set item property isMandatory to false', async () => {
-    const item = new Item({isRequired: true, isMandatory: true})
+  it('set item properties isRequired and isMandatory to false', async () => {
+    const item = ItemBuilder.init().withIsRequired(true).withIsMandatory(false).build()
     const itemsRepository = {
       findById: jest.fn(async () => item),
       save: jest.fn()

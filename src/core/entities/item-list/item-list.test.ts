@@ -1,12 +1,12 @@
 import {ItemList} from './item-list'
-import {Item} from '../item'
+import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 
 describe('ListItem List should', () => {
   const items = [
-    new Item({name: 'Milk', isRequired: true}),
-    new Item({name: 'Cookies', isRequired: true, isMandatory: true}),
-    new Item({name: 'Milk shake', isMandatory: true}),
-    new Item()
+    ItemBuilder.init().withName('Milk').withIsRequired(true).withIsMandatory(false).build(),
+    ItemBuilder.init().withName('Cookies').withIsRequired(true).withIsMandatory(true).build(),
+    ItemBuilder.init().withName('Milk shake').withIsRequired(false).withIsMandatory(true).build(),
+    ItemBuilder.init().withIsRequired(false).withIsMandatory(false).build(),
   ]
 
   it('return all items', () => {

@@ -18,26 +18,26 @@ export const useCases = [
     opositeLabel: messages.setItemAsNotMandatory,
     useCase: props.setItemAsMandatory,
     props
-  }))(buildListItemProps(ItemBuilder.initialize().withIsMandatory(false).build())),
+  }))(buildListItemProps(ItemBuilder.init().withIsMandatory(false).build())),
   ((props) => ({
     status: 'not mandatory',
     label: messages.setItemAsNotMandatory,
     opositeLabel: messages.setItemAsMandatory,
     useCase: props.setItemAsNotMandatory,
     props
-  }))(buildListItemProps(ItemBuilder.initialize().withIsMandatory(true).build())),
+  }))(buildListItemProps(ItemBuilder.init().withIsMandatory(true).build())),
   ((props) => ({
     status: 'required',
     label: messages.setItemAsRequired,
     opositeLabel: messages.setItemAsNotRequired,
     useCase: props.setItemAsRequired,
     props
-  }))(buildListItemProps(ItemBuilder.initialize().withIsRequired(false).build())),
+  }))(buildListItemProps(ItemBuilder.init().withIsRequired(false).build())),
   ((props) => ({
     status: 'not required',
     label: messages.setItemAsNotRequired,
     opositeLabel: messages.setItemAsRequired,
     useCase: props.setItemAsNotRequired,
     props
-  }))(buildListItemProps(ItemBuilder.initialize().withIsRequired(true).build())),
+  }))(buildListItemProps(ItemBuilder.init().withIsRequired(true).build())),
 ];

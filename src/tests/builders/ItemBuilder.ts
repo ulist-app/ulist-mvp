@@ -18,8 +18,13 @@ export class ItemBuilder {
     this.quantity = quantity ?? 1
   }
 
-  static initialize(): ItemBuilder {
+  static init(): ItemBuilder {
     return new ItemBuilder()
+  }
+
+  withName(name: string): ItemBuilder {
+    this.name = name
+    return this
   }
 
   withIsMandatory(isMandatory: boolean): ItemBuilder {

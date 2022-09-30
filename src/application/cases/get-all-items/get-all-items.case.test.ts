@@ -1,10 +1,11 @@
 import {ItemRepository} from "../../repositories";
-import {Item, ItemList} from "../../../core";
+import {ItemList} from "../../../core";
 import {GetAllItemsCase} from "./get-all-items.case";
+import {ItemBuilder} from "../../../tests/builders/ItemBuilder";
 
 describe('Get all items use case should', () => {
   it('return all items', async () => {
-    const items = new ItemList([new Item(), new Item()])
+    const items = new ItemList([ItemBuilder.random(), ItemBuilder.random()])
     const itemsRepository = {
       findAll: jest.fn(async () => items)
     } as unknown as ItemRepository
