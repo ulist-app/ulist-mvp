@@ -52,6 +52,8 @@ describe("Local Storage implementation for item repository should", () => {
       ...items,
       [item.id.value]: {
         ...items[item.id.value],
+        _id: item.id.value,
+        _rev: undefined,
         name: itemName,
       },
     };
@@ -63,9 +65,9 @@ describe("Local Storage implementation for item repository should", () => {
 });
 
 function mapToItem(item: LocalStorageItem): Item {
-  return {
+  return new Item({
     ...item,
     id: new Id(item.id),
     category: new Category({ ...item.category, id: new Id(item.category.id) }),
-  };
+  });
 }

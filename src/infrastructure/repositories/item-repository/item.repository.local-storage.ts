@@ -13,6 +13,39 @@ export class ItemRepositoryLocalStorage implements ItemRepository {
     private readonly localStorage: LocalStorageDataSource<LocalStorageItemRecord>
   ) {}
 
+  private static mapRawToDomain(item: RawItem, category: RawCategory) {
+    return new Item({
+      ...item,
+      id: new Id(item.id),
+      category: new Category({ ...category, id: new Id(category.id) }),
+    });
+  }
+
+  private static mapToDomain(item: LocalStorageItem) {
+    return new Item({
+      ...item,
+      id: new Id(item.id),
+      category: new Category({
+        ...item.category,
+        id: new Id(item.category.id),
+      }),
+    });
+  }
+
+  private static mapToInfrastructure(item: Item): LocalStorageItem {
+    return {
+      ...item,
+      id: item.id.value,
+      category: {
+        id: item.category!.id.value,
+        _id: item.category!._id,
+        _rev: item.category!._rev,
+        name: item.category!.name,
+        color: item.category!.color,
+      },
+    };
+  }
+
   async findById(id: Id): Promise<Item> {
     return this.getItems()[id.value];
   }
@@ -58,36 +91,5 @@ export class ItemRepositoryLocalStorage implements ItemRepository {
       dictionary[item.id] = ItemRepositoryLocalStorage.mapToDomain(item);
       return dictionary;
     }, {} as Record<string, Item>);
-  }
-
-  private static mapRawToDomain(item: RawItem, category: RawCategory) {
-    return {
-      ...item,
-      id: new Id(item.id),
-      category: new Category({ ...category, id: new Id(category.id) }),
-    };
-  }
-
-  private static mapToDomain(item: LocalStorageItem) {
-    return {
-      ...item,
-      id: new Id(item.id),
-      category: new Category({
-        ...item.category,
-        id: new Id(item.category.id),
-      }),
-    };
-  }
-
-  private static mapToInfrastructure(item: Item): LocalStorageItem {
-    return {
-      ...item,
-      id: item.id.value,
-      category: {
-        id: item.category!.id.value,
-        name: item.category!.name,
-        color: item.category!.color,
-      },
-    };
   }
 }
