@@ -1,4 +1,4 @@
-import {ItemList} from "../../../domain";
+import {Item, ItemList} from "../../../domain";
 import {CategoryBuilder, ItemBuilder} from "../../../tests/builders";
 import {PouchDatasource} from "../../data-sources/pouch-db.data-source";
 import {ItemRepositoryPouchDB} from "./item.repository.pouch-db";
@@ -23,32 +23,40 @@ describe('Pouch DB implementation for item repository should', () => {
 
     const item = await new ItemRepositoryPouchDB(pouchDataSource).findById(expectedItem.id)
 
-    expect(item).toStrictEqual(
-      ItemBuilder
-        .clone(expectedItem)
-        .withRevision(item._rev)
-        .withCategory(CategoryBuilder.clone(item.category).withRevision(item.category._rev).build())
-        .build()
-    )
+    assertItemsAreEqual(item, expectedItem);
   })
 
-  xit('retrieve all items', async () => {
+  it('retrieve all items', async () => {
     const expectedItems = new ItemList(Array.of(3).map(ItemBuilder.random))
+    await Promise.all(expectedItems.getAll().map(item => helper.createItem(item)))
 
-    const result = await new ItemRepositoryPouchDB(pouchDataSource).findAll()
+    const items = await new ItemRepositoryPouchDB(pouchDataSource).findAll()
 
-    expect(result).toStrictEqual(expectedItems)
+    for (const [index, item] of Object.entries(items.getAll())) {
+      assertItemsAreEqual(item, expectedItems.getAll().at(+index)!)
+    }
   })
 
-  xit('save an item', async () => {
-    const item = ItemBuilder.random()
+  it('save an item', async () => {
+    const expectedItem = ItemBuilder.random()
+    await helper.createCategory(expectedItem.category)
+    const itemRepositoryPouchDB = new ItemRepositoryPouchDB(pouchDataSource);
 
-    const savedItem = await new ItemRepositoryPouchDB(pouchDataSource).save(item)
+    const item = await itemRepositoryPouchDB.save(expectedItem)
 
-    expect(savedItem).toStrictEqual(item)
+    const savedItem = await itemRepositoryPouchDB.findById(expectedItem.id)
+    expect(item).toStrictEqual(savedItem);
   })
 })
 
-
+function assertItemsAreEqual(item: Item, expectedItem: Item) {
+  expect(item).toStrictEqual(
+    ItemBuilder
+      .clone(expectedItem)
+      .withRevision(item._rev)
+      .withCategory(CategoryBuilder.clone(item.category).withRevision(item.category._rev).build())
+      .build()
+  )
+}
 
 

@@ -6,12 +6,17 @@ export class PouchDBTestHelper {
   }
 
   async createCategory(category = CategoryBuilder.random()): Promise<void> {
-    await this.pouch.db.put({...category, id: category.id.value, type: 'category'})
+    await this.pouch.db.put({...category, id: category.id.value, type: PouchDatasource.DocumentTypes.Category})
   }
 
   async createItem(item = ItemBuilder.random()): Promise<void> {
     await this.createCategory(item.category)
-    await this.pouch.db.put({...item, id: item.id.value, category: item.category.id.value, type: 'item'})
+    await this.pouch.db.put({
+      ...item,
+      id: item.id.value,
+      category: item.category.id.value,
+      type: PouchDatasource.DocumentTypes.Item
+    })
   }
 
   async reset(): Promise<void> {

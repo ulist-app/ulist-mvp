@@ -14,27 +14,13 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   constructor(private readonly pouch: PouchDatasource) {
   }
 
-  async findById(id: Id): Promise<Item> {
-    const document = await this.pouch.db.get<PouchDBItem>(id.value)
-    return this.mapItemToDomain(document)
-  }
-
-  findAll(): Promise<ItemList> {
-    return Promise.resolve(undefined);
-  }
-
-  save(item: Item): Promise<Item> {
-    return Promise.resolve(undefined);
-  }
-
-  private async mapItemToDomain(document: PouchDBItem): Promise<Item> {
-    const category = await this.pouch.db.get<PouchDBCategory>(document.category)
+  private static mapItemToDomain(document: PouchDBItem, category: Category): Item {
     return new Item({
       _id: document._id,
       _rev: document._rev,
       id: new Id(document.id),
       name: document.name,
-      category: ItemRepositoryPouchDB.mapCategoryToDomain(category),
+      category,
       isRequired: document.isRequired,
       isMandatory: document.isMandatory,
     })
@@ -50,4 +36,57 @@ export class ItemRepositoryPouchDB implements ItemRepository {
     })
   }
 
+  private static generateCategoryDictionary(categories: Array<PouchDBCategory>): Record<string, Category> {
+    return categories.reduce((dictionary, category) => {
+      dictionary[category.id.value] = ItemRepositoryPouchDB.mapCategoryToDomain(category)
+      return dictionary
+    }, {} as Record<string, Category>)
+  }
+
+  async findById(id: Id): Promise<Item> {
+    // TODO: Test if item is not found
+    const document = await this.pouch.db.get<PouchDBItem>(id.value)
+    const category = await this.findCategory(document.category)
+    return ItemRepositoryPouchDB.mapItemToDomain(document, category)
+  }
+
+  async findAll(): Promise<ItemList> {
+    const documents = await this.pouch.db.allDocs<PouchDBItem | PouchDBCategory>({include_docs: true})
+    const {categories, items} = this.groupDocumentsByType(documents);
+    const categoryDictionary = ItemRepositoryPouchDB.generateCategoryDictionary(categories)
+    return new ItemList(items.map(item => {
+      const category = categoryDictionary[item.id.value]
+      return ItemRepositoryPouchDB.mapItemToDomain(item, category)
+    }))
+  }
+
+  async save(item: Item): Promise<Item> {
+    const response = await this.pouch.db.put({...item, id: item.id.value, category: item.category.id.value})
+    if (!response.ok) {
+      throw new Error(`Error saving item: ${JSON.stringify(item, null, 2)}`)
+    }
+    return this.findById(item.id)
+  }
+
+  private groupDocumentsByType(documents: PouchDB.Core.AllDocsResponse<PouchDBItem | PouchDBCategory>) {
+    const {categories, items} = documents.rows.reduce((result, {doc}) => {
+      // @ts-ignore
+      if (doc.type === PouchDatasource.DocumentTypes.Category) {
+        // @ts-ignore
+        result.categories = result.categories.concat(doc)
+      }
+      // @ts-ignore
+      if (doc.type === PouchDatasource.DocumentTypes.Item) {
+        // @ts-ignore
+        result.items = result.items.concat(doc)
+      }
+      return result
+    }, {categories: [] as PouchDBCategory[], items: [] as PouchDBItem[]})
+    return {categories, items};
+  }
+
+  private async findCategory(id: string): Promise<Category> {
+    const category = await this.pouch.db.get<PouchDBCategory>(id)
+    return ItemRepositoryPouchDB.mapCategoryToDomain(category)
+  }
 }
