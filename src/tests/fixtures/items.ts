@@ -1,4 +1,4 @@
-import {LocalStorageItem} from "../../infrastructure/repositories/item-repository/item-repository.local-storage";
+import {LocalStorageItem} from "../../infrastructure/repositories";
 
 export const items: Record<string, LocalStorageItem> = {
   "d1043515-21da-4de2-b410-9eb2cae2e813": {
