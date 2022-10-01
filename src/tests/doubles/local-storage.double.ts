@@ -1,33 +1,33 @@
-import {LocalStorageDataSource} from "../../infrastructure/data-sources";
+import { LocalStorageDataSource } from "../../infrastructure/data-sources";
 
 interface LocalStorageDoubleParams {
-  onGet?: any
+  onGet?: any;
 }
 
-export class LocalStorageDouble<T> implements LocalStorageDataSource<T>{
-  private readonly getSpy = jest.fn()
-  private readonly setSpy = jest.fn()
+export class LocalStorageDouble<T> implements LocalStorageDataSource<T> {
+  private readonly getSpy = jest.fn();
+  private readonly setSpy = jest.fn();
 
-  private readonly onGet = null
+  private readonly onGet = null;
 
   constructor(params: LocalStorageDoubleParams = {}) {
-    this.onGet = params.onGet
+    this.onGet = params.onGet;
   }
 
   get(): T {
-    this.getSpy()
+    this.getSpy();
     return this.onGet as T;
   }
 
   set(item: T): void {
-    this.setSpy(item)
+    this.setSpy(item);
   }
 
   assertSetHasBeenCalledWith(item: T) {
-    expect(this.setSpy).toHaveBeenCalledWith(item)
+    expect(this.setSpy).toHaveBeenCalledWith(item);
   }
 
   assertGetHasBeenCalled() {
-    expect(this.getSpy).toBeCalled()
+    expect(this.getSpy).toBeCalled();
   }
 }

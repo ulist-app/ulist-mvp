@@ -1,13 +1,13 @@
-import { v4 } from 'uuid'
+import { v4 } from "uuid";
 
 export class Id {
-  readonly value: string
+  readonly value: string;
 
-  constructor (id: string = v4()) {
-    this.value = id
+  constructor(id: string = v4()) {
+    this.value = id;
   }
 
   toString() {
-    return this.value
+    return this.value;
   }
 }

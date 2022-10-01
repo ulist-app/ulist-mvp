@@ -1,3 +1,3 @@
-export interface UseCase <Input, Output> {
-  exec(input: Input): Output
+export interface UseCase<Input, Output> {
+  exec(input: Input): Output;
 }

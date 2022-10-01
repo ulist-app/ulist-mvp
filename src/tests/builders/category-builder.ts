@@ -1,31 +1,30 @@
-import {faker} from "@faker-js/faker";
-import {Category, CategoryParams, Id} from "../../domain";
+import { faker } from "@faker-js/faker";
+import { Category, CategoryParams, Id } from "../../domain";
 
 export class CategoryBuilder {
+  private id: Id;
+  private _rev?: string;
+  private name: string;
+  private color: string;
 
-  private id: Id
-  private _rev?: string
-  private name: string
-  private color: string
-
-  private constructor({id, _rev, name, color}: CategoryParams = {}) {
-    this.id = id || new Id()
-    this._rev = _rev
-    this.name = name || faker.random.word()
-    this.color = color || faker.color.rgb({prefix: '#', casing: 'lower'})
+  private constructor({ id, _rev, name, color }: CategoryParams = {}) {
+    this.id = id || new Id();
+    this._rev = _rev;
+    this.name = name || faker.random.word();
+    this.color = color || faker.color.rgb({ prefix: "#", casing: "lower" });
   }
 
   static clone(category: Category): CategoryBuilder {
-    return new CategoryBuilder({...category})
+    return new CategoryBuilder({ ...category });
   }
 
   static random(): Category {
-    return new CategoryBuilder().build()
+    return new CategoryBuilder().build();
   }
 
   withRevision(_rev?: string): CategoryBuilder {
-    this._rev = _rev
-    return this
+    this._rev = _rev;
+    return this;
   }
 
   build(): Category {
@@ -33,7 +32,7 @@ export class CategoryBuilder {
       id: this.id,
       _rev: this._rev,
       name: this.name,
-      color: this.color
-    })
+      color: this.color,
+    });
   }
 }

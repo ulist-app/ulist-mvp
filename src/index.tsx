@@ -1,35 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.scss';
-import App from './infrastructure/ui/App/App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.scss";
+import App from "./infrastructure/ui/App/App";
+import reportWebVitals from "./reportWebVitals";
 import {
   ItemRepositoryLocalStorage,
-  LocalStorageItemRecord
+  LocalStorageItemRecord,
 } from "./infrastructure/repositories";
-import {LocalStorage, LocalStorageCollection} from "./infrastructure/data-sources";
+import {
+  LocalStorage,
+  LocalStorageCollection,
+} from "./infrastructure/data-sources";
 import {
   GetAllItemsCase,
-  SetItemAsMandatoryCase, SetItemAsNotMandatoryCase,
+  SetItemAsMandatoryCase,
+  SetItemAsNotMandatoryCase,
   SetItemAsNotRequiredCase,
   SetItemAsRequiredCase,
 } from "./application";
 
-const itemRepository = new ItemRepositoryLocalStorage(new LocalStorage<LocalStorageItemRecord>(LocalStorageCollection.Items))
+const itemRepository = new ItemRepositoryLocalStorage(
+  new LocalStorage<LocalStorageItemRecord>(LocalStorageCollection.Items)
+);
 const useCases = {
   getAllItems: new GetAllItemsCase(itemRepository),
   setItemAsRequired: new SetItemAsRequiredCase(itemRepository),
   setItemAsNotRequired: new SetItemAsNotRequiredCase(itemRepository),
   setItemAsMandatory: new SetItemAsMandatoryCase(itemRepository),
   setItemAsNotMandatory: new SetItemAsNotMandatoryCase(itemRepository),
-}
+};
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App {...useCases}/>
+    <App {...useCases} />
   </React.StrictMode>
 );
 
@@ -37,4 +43,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-

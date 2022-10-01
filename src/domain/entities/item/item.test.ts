@@ -1,51 +1,51 @@
-import {Category, defaultCategory} from "../category";
-import { Id } from '../id'
-import { Item } from './item'
+import { Category, defaultCategory } from "../category";
+import { Id } from "../id";
+import { Item } from "./item";
 
-describe('ListItem should', () => {
+describe("ListItem should", () => {
   const itemParams = {
     id: new Id(),
-    name: 'irrelevant-item',
-    category: new Category({name: 'Default category'}),
+    name: "irrelevant-item",
+    category: new Category({ name: "Default category" }),
     isRequired: true,
     isMandatory: false,
-    quantity: 2
-  }
+    quantity: 2,
+  };
 
-  describe('be created', () => {
-    it('successfully', () => {
-      const item = new Item(itemParams)
+  describe("be created", () => {
+    it("successfully", () => {
+      const item = new Item(itemParams);
 
-      expect(item.id).toEqual(itemParams.id)
-      expect(item.name).toEqual(itemParams.name)
-      expect(item.category).toEqual(itemParams.category)
-      expect(item.isRequired).toEqual(itemParams.isRequired)
-      expect(item.isMandatory).toEqual(itemParams.isMandatory)
-      expect(item.quantity).toEqual(itemParams.quantity)
-    })
+      expect(item.id).toEqual(itemParams.id);
+      expect(item.name).toEqual(itemParams.name);
+      expect(item.category).toEqual(itemParams.category);
+      expect(item.isRequired).toEqual(itemParams.isRequired);
+      expect(item.isMandatory).toEqual(itemParams.isMandatory);
+      expect(item.quantity).toEqual(itemParams.quantity);
+    });
 
-    describe('with default', () => {
-      const item = new Item()
+    describe("with default", () => {
+      const item = new Item();
 
-      it('id as Id', () => {
-        expect(item.id).toBeInstanceOf(Id)
-      })
+      it("id as Id", () => {
+        expect(item.id).toBeInstanceOf(Id);
+      });
 
       it('name as "Untitled"', () => {
-        expect(item.name).toBe('Untitled')
-      })
+        expect(item.name).toBe("Untitled");
+      });
 
-      it('isRequired as false', () => {
-        expect(item.isRequired).toBeFalsy()
-      })
+      it("isRequired as false", () => {
+        expect(item.isRequired).toBeFalsy();
+      });
 
-      it('quantity as 1', () => {
-        expect(item.quantity).toBe(1)
-      })
+      it("quantity as 1", () => {
+        expect(item.quantity).toBe(1);
+      });
 
-      it('category as default category', () => {
-        expect(item.category).toStrictEqual(defaultCategory)
-      })
-    })
-  })
-})
+      it("category as default category", () => {
+        expect(item.category).toStrictEqual(defaultCategory);
+      });
+    });
+  });
+});

@@ -1,62 +1,70 @@
-import {ItemRepository} from "../../../application";
-import {Category, Id, Item, ItemList} from "../../../domain";
-import {categories, items, RawCategory, RawItem} from "../../data";
-import {LocalStorageDataSource} from "../../data-sources";
+import { ItemRepository } from "../../../application";
+import { Category, Id, Item, ItemList } from "../../../domain";
+import { categories, items, RawCategory, RawItem } from "../../data";
+import { LocalStorageDataSource } from "../../data-sources";
 
-export type LocalStorageItem = Omit<RawItem, 'category'> & {
-  category: RawCategory
-}
-export type LocalStorageItemRecord = Record<string, LocalStorageItem>
+export type LocalStorageItem = Omit<RawItem, "category"> & {
+  category: RawCategory;
+};
+export type LocalStorageItemRecord = Record<string, LocalStorageItem>;
 
 export class ItemRepositoryLocalStorage implements ItemRepository {
-  constructor(private readonly localStorage: LocalStorageDataSource<LocalStorageItemRecord>) {}
+  constructor(
+    private readonly localStorage: LocalStorageDataSource<LocalStorageItemRecord>
+  ) {}
 
   async findById(id: Id): Promise<Item> {
-    return this.getItems()[id.value]
+    return this.getItems()[id.value];
   }
 
   async findAll() {
-    const items = this.getItems()
-    return new ItemList(Object.values(items))
+    const items = this.getItems();
+    return new ItemList(Object.values(items));
   }
 
   async save(item: Item) {
-    const items = this.getItems()
-    items[item.id.value] = item
-    this.localStorage.set(Object.values(items).reduce((dictionary, item) => {
-      dictionary[item.id.value] = ItemRepositoryLocalStorage.mapToInfrastructure(item)
-      return dictionary
-    }, {} as Record<string, LocalStorageItem>))
-    return item
+    const items = this.getItems();
+    items[item.id.value] = item;
+    this.localStorage.set(
+      Object.values(items).reduce((dictionary, item) => {
+        dictionary[item.id.value] =
+          ItemRepositoryLocalStorage.mapToInfrastructure(item);
+        return dictionary;
+      }, {} as Record<string, LocalStorageItem>)
+    );
+    return item;
   }
 
   private getItems(): Record<string, Item> {
-    const items = this.localStorage.get()
-    return items
-      ? this.enrichItems(items)
-      : this.enrichDefaultItems()
+    const items = this.localStorage.get();
+    return items ? this.enrichItems(items) : this.enrichDefaultItems();
   }
 
   private enrichDefaultItems(): Record<string, Item> {
     return Object.values(items).reduce((dictionary, item) => {
-      const category = categories[item.category]
-      dictionary[item.id] = ItemRepositoryLocalStorage.mapRawToDomain(item, category)
-      return dictionary
-    }, {} as Record<string, Item>)
+      const category = categories[item.category];
+      dictionary[item.id] = ItemRepositoryLocalStorage.mapRawToDomain(
+        item,
+        category
+      );
+      return dictionary;
+    }, {} as Record<string, Item>);
   }
 
-  private enrichItems(items: Record<string, LocalStorageItem>): Record<string, Item> {
+  private enrichItems(
+    items: Record<string, LocalStorageItem>
+  ): Record<string, Item> {
     return Object.values(items).reduce((dictionary, item) => {
-      dictionary[item.id] = ItemRepositoryLocalStorage.mapToDomain(item)
-      return dictionary
-    }, {} as Record<string, Item>)
+      dictionary[item.id] = ItemRepositoryLocalStorage.mapToDomain(item);
+      return dictionary;
+    }, {} as Record<string, Item>);
   }
 
   private static mapRawToDomain(item: RawItem, category: RawCategory) {
     return {
       ...item,
       id: new Id(item.id),
-      category: new Category({...category, id: new Id(category.id)})
+      category: new Category({ ...category, id: new Id(category.id) }),
     };
   }
 
@@ -64,7 +72,10 @@ export class ItemRepositoryLocalStorage implements ItemRepository {
     return {
       ...item,
       id: new Id(item.id),
-      category: new Category({...item.category, id: new Id(item.category.id)})
+      category: new Category({
+        ...item.category,
+        id: new Id(item.category.id),
+      }),
     };
   }
 
@@ -76,7 +87,7 @@ export class ItemRepositoryLocalStorage implements ItemRepository {
         id: item.category!.id.value,
         name: item.category!.name,
         color: item.category!.color,
-      }
-    }
+      },
+    };
   }
 }
