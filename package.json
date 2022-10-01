@@ -13,9 +13,12 @@
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "classnames": "^2.3.2",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "pouchdb": "^7.3.0",
     "pouchdb-adapter-memory": "^7.3.0",
     "pouchdb-find": "^7.3.0",
+    "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
@@ -34,17 +37,24 @@
     "test:watch": "react-scripts test --verbose",
     "test:coverage": "npm t -- --coverage",
     "test:db": "docker-compose -f src/infrastructure/docker-compose.yml up -d ",
+    "linter:fix": "eslint --fix src",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest",
-      "plugin:jsx-a11y/recommended"
+      "plugin:jsx-a11y/recommended",
+      "plugin:prettier/recommended"
     ],
     "rules": {
-      "testing-library/no-unnecessary-act": 0,
-      "max-len": ["error", { "code": 130, "tabWidth": 2 }]
+      "max-len": [
+        "error",
+        {
+          "code": 130,
+          "tabWidth": 2
+        }
+      ]
     }
   },
   "browserslist": {
