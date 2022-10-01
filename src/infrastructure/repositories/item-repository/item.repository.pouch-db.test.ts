@@ -1,8 +1,9 @@
-import {Item, ItemList} from "../../../domain";
+import {Item, ItemList, ItemNotSavedError} from "../../../domain";
 import {CategoryBuilder, ItemBuilder} from "../../../tests/builders";
 import {PouchDatasource} from "../../data-sources/pouch-db.data-source";
 import {ItemRepositoryPouchDB} from "./item.repository.pouch-db";
 import {PouchDBTestHelper} from "../../../tests/PouchDBTestHelper";
+import {ItemNotFoundError} from "../../../domain/errors/ItemNotFoundError";
 
 describe('Pouch DB implementation for item repository should', () => {
   let pouchDataSource: PouchDatasource
@@ -17,25 +18,42 @@ describe('Pouch DB implementation for item repository should', () => {
     await helper.reset()
   })
 
-  it('find item by id', async () => {
-    const expectedItem = ItemBuilder.random()
-    await helper.createItem(expectedItem)
+  describe('find item by id', () => {
+    it('successfully', async () => {
+      const expectedItem = ItemBuilder.random()
+      await helper.createItem(expectedItem)
 
-    const item = await new ItemRepositoryPouchDB(pouchDataSource).findById(expectedItem.id)
+      const item = await new ItemRepositoryPouchDB(pouchDataSource).findById(expectedItem.id)
 
-    assertItemsAreEqual(item, expectedItem);
-  })
+      assertItemsAreEqual(item, expectedItem);
+    })
 
-  it('retrieve all items', async () => {
-    const expectedItems = new ItemList(Array.of(3).map(ItemBuilder.random))
-    await Promise.all(expectedItems.getAll().map(item => helper.createItem(item)))
+    it('throw ItemNotFoundError if item is not found', async () => {
+      const expectedItem = ItemBuilder.random()
 
-    const items = await new ItemRepositoryPouchDB(pouchDataSource).findAll()
+      await expect(new ItemRepositoryPouchDB(pouchDataSource).findById(expectedItem.id))
+        .rejects.toThrow(new ItemNotFoundError(expectedItem.id))
+    })
+  });
 
-    for (const [index, item] of Object.entries(items.getAll())) {
-      assertItemsAreEqual(item, expectedItems.getAll().at(+index)!)
-    }
-  })
+  describe('find all items', () => {
+    it('successfully', async () => {
+      const expectedItems = new ItemList(Array.of(3).map(ItemBuilder.random))
+      await Promise.all(expectedItems.getAll().map(item => helper.createItem(item)))
+
+      const items = await new ItemRepositoryPouchDB(pouchDataSource).findAll()
+
+      for (const [index, item] of Object.entries(items.getAll())) {
+        assertItemsAreEqual(item, expectedItems.getAll().at(+index)!)
+      }
+    })
+
+    it('return and empty ItemList if there are no items', async () => {
+      const items = await new ItemRepositoryPouchDB(pouchDataSource).findAll()
+
+      expect(items.getAll()).toHaveLength(0)
+    })
+  });
 
   it('save an item', async () => {
     const expectedItem = ItemBuilder.random()
@@ -46,6 +64,13 @@ describe('Pouch DB implementation for item repository should', () => {
 
     const savedItem = await itemRepositoryPouchDB.findById(expectedItem.id)
     expect(item).toStrictEqual(savedItem);
+  })
+
+  it('throw an ItemNotSavedError if item can\'t be saved', async () => {
+    const expectedItem = ItemBuilder.random()
+    const itemRepositoryPouchDB = new ItemRepositoryPouchDB({db: {put: jest.fn(async () => ({ok: false}))}} as unknown as PouchDatasource);
+
+    await expect(itemRepositoryPouchDB.save(expectedItem)).rejects.toThrow(new ItemNotSavedError(expectedItem))
   })
 })
 

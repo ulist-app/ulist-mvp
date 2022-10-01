@@ -1,6 +1,7 @@
 import {ItemRepository} from "../../../application";
-import {Category, Id, Item, ItemList} from "../../../domain";
+import {Category, Id, Item, ItemList, ItemNotSavedError} from "../../../domain";
 import {PouchDatasource, PouchDBDocument} from "../../data-sources/pouch-db.data-source";
+import {ItemNotFoundError} from "../../../domain/errors/ItemNotFoundError";
 
 export type PouchDBItem = PouchDBDocument<Item> & {
   id: string
@@ -44,14 +45,21 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   }
 
   async findById(id: Id): Promise<Item> {
-    // TODO: Test if item is not found
-    const document = await this.pouch.db.get<PouchDBItem>(id.value)
-    const category = await this.findCategory(document.category)
-    return ItemRepositoryPouchDB.mapItemToDomain(document, category)
+    try {
+      const document = await this.pouch.db.get<PouchDBItem>(id.value)
+      const category = await this.findCategory(document.category)
+      return ItemRepositoryPouchDB.mapItemToDomain(document, category)
+    } catch (error) {
+      console.error(error?.toString())
+      throw new ItemNotFoundError(id)
+    }
   }
 
   async findAll(): Promise<ItemList> {
     const documents = await this.pouch.db.allDocs<PouchDBItem | PouchDBCategory>({include_docs: true})
+    if (documents.total_rows === 0) {
+      return new ItemList([])
+    }
     const {categories, items} = this.groupDocumentsByType(documents);
     const categoryDictionary = ItemRepositoryPouchDB.generateCategoryDictionary(categories)
     return new ItemList(items.map(item => {
@@ -63,7 +71,7 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   async save(item: Item): Promise<Item> {
     const response = await this.pouch.db.put({...item, id: item.id.value, category: item.category.id.value})
     if (!response.ok) {
-      throw new Error(`Error saving item: ${JSON.stringify(item, null, 2)}`)
+      throw new ItemNotSavedError(item)
     }
     return this.findById(item.id)
   }
