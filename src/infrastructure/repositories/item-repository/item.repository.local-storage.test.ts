@@ -3,8 +3,7 @@ import {LocalStorageDouble} from "../../../tests/doubles";
 import {items} from "../../../tests/fixtures";
 import {ItemRepositoryLocalStorage, LocalStorageItem, LocalStorageItemRecord} from "./item.repository.local-storage";
 
-
-describe('Item repository should', () => {
+describe('Local Storage implementation for item repository should', () => {
   let localStorage: LocalStorageDouble<LocalStorageItemRecord>
 
   beforeEach(() => {

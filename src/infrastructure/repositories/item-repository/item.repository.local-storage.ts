@@ -27,6 +27,7 @@ export class ItemRepositoryLocalStorage implements ItemRepository {
       dictionary[item.id.value] = ItemRepositoryLocalStorage.mapToInfrastructure(item)
       return dictionary
     }, {} as Record<string, LocalStorageItem>))
+    return item
   }
 
   private getItems(): Record<string, Item> {

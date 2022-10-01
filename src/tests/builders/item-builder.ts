@@ -4,13 +4,16 @@ import {CategoryBuilder} from "./category-builder";
 
 export class ItemBuilder {
   private id: Id
+  private _rev?: string
   private category: Category
   private name: string
   private isRequired: boolean
   private isMandatory: boolean
   private quantity: number
-  private constructor ({ id, name, category, isRequired, isMandatory, quantity }: ItemParams = {}) {
+
+  private constructor({id, _rev, name, category, isRequired, isMandatory, quantity}: ItemParams = {}) {
     this.id = id || new Id();
+    this._rev = _rev
     this.name = name || faker.random.words()
     this.category = category || CategoryBuilder.random()
     this.isRequired = isRequired ?? faker.datatype.boolean()
@@ -28,6 +31,11 @@ export class ItemBuilder {
 
   withName(name: string): ItemBuilder {
     this.name = name
+    return this
+  }
+
+  withRevision(_rev?: string): ItemBuilder {
+    this._rev = _rev
     return this
   }
 
@@ -53,6 +61,7 @@ export class ItemBuilder {
   build(): Item {
     return new Item({
       id: this.id,
+      _rev: this._rev,
       name: this.name,
       category: this.category,
       isRequired: this.isRequired,
