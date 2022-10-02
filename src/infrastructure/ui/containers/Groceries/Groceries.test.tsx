@@ -17,14 +17,16 @@ describe("Groceries view should", () => {
     );
     const getAllItemsDouble = new GetAllItemsCaseDouble([items]);
 
-    render(<Groceries />);
-    initStore(
-      UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+    await waitFor(() =>
+      initStore(
+        UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+      )
     );
+    render(<Groceries />);
 
     await waitFor(() => getAllItemsDouble.assertHasBeenCalled());
     for (const item of items.getAll()) {
-      screen.getByText(item.name);
+      await waitFor(() => screen.getByText(item.name));
     }
   });
 
@@ -36,10 +38,12 @@ describe("Groceries view should", () => {
     ]);
     const getAllItemsDouble = new GetAllItemsCaseDouble([items]);
 
-    render(<Groceries />);
-    initStore(
-      UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+    await waitFor(() =>
+      initStore(
+        UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+      )
     );
+    render(<Groceries />);
     userEvent.click(screen.getByLabelText(messages.menu.searchCTA));
     userEvent.type(screen.getByLabelText(messages.search.searchInput), "m");
 
@@ -70,7 +74,7 @@ describe("Groceries view should", () => {
       .withGetAllItemsCase(getAllItemsDouble)
       .withSetItemAsRequiredCase(setItemAsRequired)
       .build();
-    initStore(useCases);
+    await waitFor(() => initStore(useCases));
     render(<Groceries />);
 
     await waitFor(() => {
@@ -111,7 +115,7 @@ describe("Groceries view should", () => {
       .withSetItemAsMandatoryCase(setItemAsMandatoryDouble)
       .build();
 
-    initStore(useCases);
+    await waitFor(() => initStore(useCases));
     render(<Groceries />);
     await waitFor(() => {
       screen.getByTestId(item.id.value);
@@ -139,8 +143,10 @@ describe("Groceries view should", () => {
       ItemBuilder.init().withName("cream").withIsRequired(false).build(),
     ]);
     const getAllItemsDouble = new GetAllItemsCaseDouble([items]);
-    initStore(
-      UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+    await waitFor(() =>
+      initStore(
+        UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+      )
     );
     render(<Groceries />);
     await waitFor(() => {
@@ -175,8 +181,10 @@ describe("Groceries view should", () => {
       ItemBuilder.init().withName("cream").withIsRequired(false).build(),
     ]);
     const getAllItemsDouble = new GetAllItemsCaseDouble([items]);
-    initStore(
-      UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+    await waitFor(() =>
+      initStore(
+        UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
+      )
     );
     render(<Groceries />);
     await waitFor(() => {

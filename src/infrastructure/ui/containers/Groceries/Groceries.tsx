@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useStore } from "../../store";
 
 export function Groceries() {
-  const { items, useCases } = useStore();
+  const { items, actions } = useStore();
   const [lastSearch, setLastSearch] = useState("");
   const [view, setView] = useState(Views.All);
 
   useEffect(() => {
-    useCases.getAllItems();
-  }, [useCases, view]);
+    actions.getAllItems();
+  }, [actions, view]);
 
   return (
     <>

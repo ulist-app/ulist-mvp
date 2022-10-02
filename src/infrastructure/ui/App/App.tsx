@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import "./App.scss";
-import { UseCases } from "../../../application";
 import { palette } from "../../../domain";
 import { initStore } from "../store";
 import { Groceries } from "../containers";
-import { Route } from "wouter";
+import { Link, Route, useRoute } from "wouter";
 import { ItemCRUD } from "../views/ItemCRUD";
 import { SettingsCRUD } from "../views/SettingsCRUD";
 
-function App(props: UseCases) {
+function App() {
+  const [match] = useRoute("/");
   useEffect(() => {
-    initStore(props);
-  }, [props]);
+    initStore();
+  }, []);
 
   return (
     <div className="App">
@@ -22,7 +22,11 @@ function App(props: UseCases) {
           color: palette.white,
         }}
       >
-        <h1>🛒 Groceries list 🛒</h1>
+        <span>{!match && <Link to="/">🔙</Link>}</span>
+        <span>🛒 Groceries list 🛒</span>
+        <span>
+          <Link to="/settings">⚙️</Link>
+        </span>
       </header>
       <main className="App-main">
         <Route path="/" component={Groceries} />

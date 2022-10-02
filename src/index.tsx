@@ -3,31 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.scss";
 import App from "./infrastructure/ui/App/App";
 import reportWebVitals from "./reportWebVitals";
-import {
-  ItemRepositoryLocalStorage,
-  LocalStorageItemRecord,
-  SettingsRepositoryLocalStorage,
-} from "./infrastructure/repositories";
-import {
-  LocalStorage,
-  LocalStorageCollection,
-} from "./infrastructure/data-sources";
-import { generateUseCases } from "./application";
-import { Settings } from "./domain";
-
-const itemRepository = new ItemRepositoryLocalStorage(
-  new LocalStorage<LocalStorageItemRecord>(LocalStorageCollection.Items)
-);
-const settingsRepository = new SettingsRepositoryLocalStorage(
-  new LocalStorage<Settings>(LocalStorageCollection.Settings)
-);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App {...generateUseCases({ itemRepository, settingsRepository })} />
+    <App />
   </React.StrictMode>
 );
 

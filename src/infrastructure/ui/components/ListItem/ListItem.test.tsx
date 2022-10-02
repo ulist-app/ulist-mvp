@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ListItem } from "./index";
 import { ItemBuilder } from "../../../../tests/builders";
@@ -63,29 +63,29 @@ describe("List item should", () => {
   });
 
   describe("set item as", () => {
-    it("set item as mandatory", async () => {
+    it("mandatory", async () => {
       const label = messages.actions.setItemAsMandatory;
       const useCase = new UseCaseDouble();
       const useCases = UseCasesBuilder.init()
         .withSetItemAsMandatoryCase(useCase)
         .build();
-      initStore(useCases);
+      await waitFor(() => initStore(useCases));
       render(
         <ListItem item={ItemBuilder.init().withIsMandatory(false).build()} />
       );
 
       userEvent.click(screen.getByLabelText(label));
 
-      useCase.assertHasBeenCalledTimes(1);
+      await waitFor(() => useCase.assertHasBeenCalledTimes(1));
     });
 
-    it("set item as not mandatory", async () => {
+    it("not mandatory", async () => {
       const label = messages.actions.setItemAsNotMandatory;
       const useCase = new UseCaseDouble();
       const useCases = UseCasesBuilder.init()
         .withSetItemAsNotMandatoryCase(useCase)
         .build();
-      initStore(useCases);
+      await waitFor(() => initStore(useCases));
       render(
         <ListItem item={ItemBuilder.init().withIsMandatory(true).build()} />
       );
@@ -95,13 +95,13 @@ describe("List item should", () => {
       useCase.assertHasBeenCalledTimes(1);
     });
 
-    it("set item as required", async () => {
+    it("required", async () => {
       const label = messages.actions.setItemAsRequired;
       const useCase = new UseCaseDouble();
       const useCases = UseCasesBuilder.init()
         .withSetItemAsRequiredCase(useCase)
         .build();
-      initStore(useCases);
+      await waitFor(() => initStore(useCases));
       render(
         <ListItem item={ItemBuilder.init().withIsRequired(false).build()} />
       );
@@ -111,13 +111,13 @@ describe("List item should", () => {
       useCase.assertHasBeenCalledTimes(1);
     });
 
-    it("set item as not required", async () => {
+    it("not required", async () => {
       const label = messages.actions.setItemAsNotRequired;
       const useCase = new UseCaseDouble();
       const useCases = UseCasesBuilder.init()
         .withSetItemAsNotRequiredCase(useCase)
         .build();
-      initStore(useCases);
+      await waitFor(() => initStore(useCases));
       render(
         <ListItem item={ItemBuilder.init().withIsRequired(true).build()} />
       );
