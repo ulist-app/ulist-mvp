@@ -21,8 +21,8 @@ export const List: FC<ListProps> = ({ items }) => {
   return (
     <div className="List">
       {ItemList.groupItemsByCategory(items).map(([categoryName, items]) => (
-        <div key={categoryName}>
-          <h2 className="category-name">{categoryName}</h2>
+        <details open key={categoryName}>
+          <summary>{categoryName}</summary>
           <ul className="ItemList">
             {items.map((item) => (
               <li key={item.id.value}>
@@ -30,7 +30,7 @@ export const List: FC<ListProps> = ({ items }) => {
               </li>
             ))}
           </ul>
-        </div>
+        </details>
       ))}
     </div>
   );
