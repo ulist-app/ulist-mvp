@@ -70,6 +70,7 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   }
 
   async findAll(): Promise<ItemList> {
+    console.debug("[FIND ALL ITEMS]");
     const documents = await this.pouch.db.allDocs<
       PouchDBItem | PouchDBCategory
     >({ include_docs: true });
@@ -79,6 +80,7 @@ export class ItemRepositoryPouchDB implements ItemRepository {
     const { categories, items } = this.groupDocumentsByType(documents);
     const categoryDictionary =
       ItemRepositoryPouchDB.generateCategoryDictionary(categories);
+    console.debug("[FIND ALL ITEMS]", items);
     return new ItemList(
       items.map((item) => {
         const category = categoryDictionary[item.id.value];
@@ -88,9 +90,11 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   }
 
   async save(item: Item): Promise<Item> {
+    console.debug("[SAVE ITEM]");
     const response = await this.pouch.db.put({
       ...item,
       id: item.id.value,
+      type: PouchDatasource.DocumentTypes.Item,
       category: item.category.id.value,
     });
     if (!response.ok) {

@@ -7,6 +7,7 @@ PouchDb.plugin(PouchDbMemoryAdapter);
 PouchDb.plugin(PouchDbFindPlugin);
 
 export type PouchDBDocument<T> = T & PouchDB.Core.IdMeta & PouchDB.Core.GetMeta;
+
 export interface PouchDatasourceParams {
   dbName: string;
   dbUrl?: string;
@@ -22,31 +23,52 @@ export class PouchDatasource {
 
   private constructor(readonly db: PouchDB.Database) {}
 
-  static createPouchDbBrowser({
-    dbName,
-    dbUrl,
-    cb,
-  }: PouchDatasourceParams): PouchDatasource {
-    // if (dbUrl && cb) {
-    //   PouchDB.sync(dbName, `${dbUrl}/${dbName}`, {
-    //     live: true,
-    //     retry: true,
-    //   })
-    //     .on("change", cb)
-    //     .on("complete", cb);
-    // }
-    return new PouchDatasource(new PouchDb(dbName));
+  static createPouchDbBrowser(params: PouchDatasourceParams): PouchDatasource {
+    return PouchDatasource.createPouchDb({ ...params });
   }
 
-  static createPouchDbMemory({
-    dbName,
-  }: PouchDatasourceParams): PouchDatasource {
-    const db = new PouchDatasource(new PouchDb(dbName, { adapter: "memory" }));
-
-    return db;
+  static createPouchDbMemory(params: PouchDatasourceParams): PouchDatasource {
+    return PouchDatasource.createPouchDb({
+      ...params,
+      options: { adapter: "memory" },
+    });
   }
 
   static isPouchDbError(error: unknown): error is PouchDB.Core.Error {
     return "status" in (error as any);
+  }
+
+  private static createPouchDb({
+    dbName,
+    dbUrl,
+    cb,
+    options,
+  }: PouchDatasourceParams & {
+    options?: PouchDB.Configuration.DatabaseConfiguration;
+  }): PouchDatasource {
+    const remoteDb = `${dbUrl}/${dbName}`;
+    if (dbUrl && cb) {
+      PouchDb.sync(dbName, remoteDb, {
+        live: true,
+        retry: true,
+      })
+        .on("error", (error) => {
+          console.error("[SYNC ERROR]", error.toString());
+        })
+        .on("active", () => {
+          console.debug("[SYNC ACTIVE]");
+        })
+        .on("change", (info) => {
+          console.debug("[SYNC CHANGES]", JSON.stringify(info, null, 2));
+          cb();
+        })
+        .on("complete", (info) => {
+          console.debug("[SYNC COMPLETE]", JSON.stringify(info, null, 2));
+          cb();
+        });
+    }
+    return options
+      ? new PouchDatasource(new PouchDb(dbName, options))
+      : new PouchDatasource(new PouchDb(dbName));
   }
 }

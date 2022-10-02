@@ -1,29 +1,32 @@
 import { useRoute } from "wouter";
 import { Transition } from "react-transition-group";
 import { useStore } from "../store";
-import { ChangeEventHandler, useEffect, useState } from "react";
+import { FormEventHandler, useEffect } from "react";
 
 export function SettingsCRUD() {
   const [match] = useRoute("/settings");
-  const { settings, useCases } = useStore();
-  const [syncUrl, setSyncUrl] = useState(settings.syncUrl || "");
-  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = ({
-    currentTarget: { value },
-  }) => {
-    setSyncUrl(value);
+  const { settings, actions } = useStore();
+  const onSubmitHandler: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
+    const syncUrl = formData.get("syncUrl")?.toString();
+    if (syncUrl && syncUrl.length) {
+      actions.setSettings({
+        syncUrl,
+      });
+    }
   };
 
   useEffect(() => {
-    useCases.getSettings();
-  }, [useCases]);
-
-  useEffect(() => {
-    useCases.setSettings({ syncUrl });
-  }, [syncUrl]);
+    actions.getSettings();
+  }, [actions]);
 
   return (
     <Transition in={match} timeout={500}>
-      <input type="text" defaultValue={syncUrl} onChange={onChangeHandler} />
+      <form onSubmit={onSubmitHandler}>
+        <input name="syncUrl" type="text" defaultValue={settings.syncUrl} />
+        <button type="submit">💾</button>
+      </form>
     </Transition>
   );
 }

@@ -44,7 +44,8 @@ export class UseCasesBuilder {
       new UseCaseDouble()) as SetItemAsMandatoryCase;
     this.setItemAsNotMandatory = (setItemAsNotMandatory ||
       new UseCaseDouble()) as SetItemAsNotMandatoryCase;
-    this.setSettings = (setSettings || new UseCaseDouble()) as SetSettingsCase;
+    this.setSettings = (setSettings ||
+      new UseCaseDouble([{}])) as SetSettingsCase;
   }
 
   static init(): UseCasesBuilder {
