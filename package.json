@@ -40,7 +40,7 @@
     "test:watch": "react-scripts test --verbose",
     "test:coverage": "npm t -- --coverage",
     "test:db": "docker-compose -f src/infrastructure/docker-compose.yml up -d ",
-    "sync:db": "node create-db.mjs",
+    "sync:db": "node create-db.mjsx",
     "linter:fix": "eslint --fix src",
     "eject": "react-scripts eject"
   },

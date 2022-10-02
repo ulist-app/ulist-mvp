@@ -26,3 +26,4 @@ yarn-error.log*
 
 # PouchDB directory
 groceries
+secret.mjs

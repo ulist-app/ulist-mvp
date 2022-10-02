@@ -1,0 +1,1 @@
+export const remoteDbUrl = 'https://apikey-v2-1m2ljsrkmzrlb886sotlwaj9t30qtraygiqqg5j6tcgi:6278b75768b3b1937917076b30009774@df674128-2c32-44d8-91cb-38fe568c56a7-bluemix.cloudantnosqldb.appdomain.cloud:443'
