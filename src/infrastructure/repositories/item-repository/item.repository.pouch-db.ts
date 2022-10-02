@@ -52,7 +52,7 @@ export class ItemRepositoryPouchDB implements ItemRepository {
     categories: Array<PouchDBCategory>
   ): Record<string, Category> {
     return categories.reduce((dictionary, category) => {
-      dictionary[category.id.value] =
+      dictionary[category.id] =
         ItemRepositoryPouchDB.mapCategoryToDomain(category);
       return dictionary;
     }, {} as Record<string, Category>);
@@ -80,17 +80,16 @@ export class ItemRepositoryPouchDB implements ItemRepository {
     const { categories, items } = this.groupDocumentsByType(documents);
     const categoryDictionary =
       ItemRepositoryPouchDB.generateCategoryDictionary(categories);
-    console.debug("[FIND ALL ITEMS]", items);
+    console.debug("cateog", categoryDictionary, categories);
     return new ItemList(
       items.map((item) => {
-        const category = categoryDictionary[item.id.value];
+        const category = categoryDictionary[item.category];
         return ItemRepositoryPouchDB.mapItemToDomain(item, category);
       })
     );
   }
 
   async save(item: Item): Promise<Item> {
-    console.debug("[SAVE ITEM]");
     const response = await this.pouch.db.put({
       ...item,
       id: item.id.value,
