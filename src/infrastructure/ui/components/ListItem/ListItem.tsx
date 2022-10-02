@@ -5,6 +5,7 @@ import { BsFillStarFill } from "react-icons/bs";
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import { messages } from "../../../../messages";
 import { useStore } from "../../store";
+import { Link } from "wouter";
 
 export interface ListItemProps {
   item: Item;
@@ -15,7 +16,9 @@ export const ListItem: FC<ListItemProps> = ({ item }) => {
   return (
     <div className="ListItem" data-testid={item.id.value}>
       <span className="quantity">{item.quantity}</span>
-      <span className="item">{item.name}</span>
+      <Link to={`/items/${item.id.value}`}>
+        <span className="item">{item.name}</span>
+      </Link>
       <span className="is-required">
         {item.isRequired ? (
           <button

@@ -6,36 +6,28 @@ import reportWebVitals from "./reportWebVitals";
 import {
   ItemRepositoryLocalStorage,
   LocalStorageItemRecord,
+  SettingsRepositoryLocalStorage,
 } from "./infrastructure/repositories";
 import {
   LocalStorage,
   LocalStorageCollection,
 } from "./infrastructure/data-sources";
-import {
-  GetAllItemsCase,
-  SetItemAsMandatoryCase,
-  SetItemAsNotMandatoryCase,
-  SetItemAsNotRequiredCase,
-  SetItemAsRequiredCase,
-} from "./application";
+import { generateUseCases } from "./application";
+import { Settings } from "./domain";
 
 const itemRepository = new ItemRepositoryLocalStorage(
   new LocalStorage<LocalStorageItemRecord>(LocalStorageCollection.Items)
 );
-const useCases = {
-  getAllItems: new GetAllItemsCase(itemRepository),
-  setItemAsRequired: new SetItemAsRequiredCase(itemRepository),
-  setItemAsNotRequired: new SetItemAsNotRequiredCase(itemRepository),
-  setItemAsMandatory: new SetItemAsMandatoryCase(itemRepository),
-  setItemAsNotMandatory: new SetItemAsNotMandatoryCase(itemRepository),
-};
+const settingsRepository = new SettingsRepositoryLocalStorage(
+  new LocalStorage<Settings>(LocalStorageCollection.Settings)
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App {...useCases} />
+    <App {...generateUseCases({ itemRepository, settingsRepository })} />
   </React.StrictMode>
 );
 

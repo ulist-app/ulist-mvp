@@ -1,7 +1,8 @@
 import { LocalStorageDataSource } from "./local-storage.data-source";
 
 export enum LocalStorageCollection {
-  Items = "ulist:items",
+  Items = "groceries:items",
+  Settings = "groceries:settings",
 }
 
 export class LocalStorage<T> implements LocalStorageDataSource<T> {

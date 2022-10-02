@@ -4,6 +4,9 @@ import { UseCases } from "../../../application";
 import { palette } from "../../../domain";
 import { initStore } from "../store";
 import { Groceries } from "../containers";
+import { Route } from "wouter";
+import { ItemCRUD } from "../views/ItemCRUD";
+import { SettingsCRUD } from "../views/SettingsCRUD";
 
 function App(props: UseCases) {
   useEffect(() => {
@@ -22,7 +25,9 @@ function App(props: UseCases) {
         <h1>🛒 Groceries list 🛒</h1>
       </header>
       <main className="App-main">
-        <Groceries />
+        <Route path="/" component={Groceries} />
+        <Route path="/settings" component={SettingsCRUD} />
+        <Route path="/items/:id" component={ItemCRUD} />
       </main>
     </div>
   );

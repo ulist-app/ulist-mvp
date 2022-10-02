@@ -19,12 +19,12 @@ export class LocalStorageDouble<T> implements LocalStorageDataSource<T> {
     return this.onGet as T;
   }
 
-  set(item: T): void {
-    this.setSpy(item);
+  set(value: T): void {
+    this.setSpy(value);
   }
 
-  assertSetHasBeenCalledWith(item: T) {
-    expect(this.setSpy).toHaveBeenCalledWith(item);
+  assertSetHasBeenCalledWith(value: T) {
+    expect(this.setSpy).toHaveBeenCalledWith(value);
   }
 
   assertGetHasBeenCalled() {

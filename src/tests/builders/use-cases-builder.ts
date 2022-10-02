@@ -1,32 +1,41 @@
 import {
   GetAllItemsCase,
+  GetSettingsCase,
   SetItemAsMandatoryCase,
   SetItemAsNotMandatoryCase,
   SetItemAsNotRequiredCase,
   SetItemAsRequiredCase,
+  SetSettingsCase,
   UseCases,
 } from "../../application";
 import { GetAllItemsCaseDouble } from "../doubles";
 import { UseCaseDouble } from "../doubles/use-case.double";
+import { SettingsBuilder } from "./settings-builder";
 
 type ValueOf<T> = T[keyof T];
 
 export class UseCasesBuilder {
   private getAllItems: GetAllItemsCase;
+  private getSettings: GetSettingsCase;
   private setItemAsRequired: SetItemAsRequiredCase;
   private setItemAsNotRequired: SetItemAsNotRequiredCase;
   private setItemAsMandatory: SetItemAsMandatoryCase;
   private setItemAsNotMandatory: SetItemAsNotMandatoryCase;
+  private setSettings: SetSettingsCase;
 
   private constructor({
     getAllItems,
+    getSettings,
     setItemAsRequired,
     setItemAsNotRequired,
     setItemAsNotMandatory,
     setItemAsMandatory,
+    setSettings,
   }: Partial<Record<keyof UseCases, ValueOf<UseCases>>> = {}) {
     this.getAllItems = (getAllItems ||
       new GetAllItemsCaseDouble()) as GetAllItemsCase;
+    this.getSettings = (getSettings ||
+      new UseCaseDouble([SettingsBuilder.random()])) as GetSettingsCase;
     this.setItemAsRequired = (setItemAsRequired ||
       new UseCaseDouble()) as SetItemAsRequiredCase;
     this.setItemAsNotRequired = (setItemAsNotRequired ||
@@ -35,6 +44,7 @@ export class UseCasesBuilder {
       new UseCaseDouble()) as SetItemAsMandatoryCase;
     this.setItemAsNotMandatory = (setItemAsNotMandatory ||
       new UseCaseDouble()) as SetItemAsNotMandatoryCase;
+    this.setSettings = (setSettings || new UseCaseDouble()) as SetSettingsCase;
   }
 
   static init(): UseCasesBuilder {
@@ -85,10 +95,12 @@ export class UseCasesBuilder {
   build(): UseCases {
     return {
       getAllItems: this.getAllItems,
+      getSettings: this.getSettings,
       setItemAsRequired: this.setItemAsRequired,
       setItemAsNotRequired: this.setItemAsNotRequired,
       setItemAsMandatory: this.setItemAsMandatory,
       setItemAsNotMandatory: this.setItemAsNotMandatory,
+      setSettings: this.setSettings,
     };
   }
 }
