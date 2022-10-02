@@ -7,6 +7,9 @@ import {
   UseCases,
 } from "../../application";
 import { GetAllItemsCaseDouble } from "../doubles";
+import { UseCaseDouble } from "../doubles/use-case.double";
+
+type ValueOf<T> = T[keyof T];
 
 export class UseCasesBuilder {
   private getAllItems: GetAllItemsCase;
@@ -21,21 +24,17 @@ export class UseCasesBuilder {
     setItemAsNotRequired,
     setItemAsNotMandatory,
     setItemAsMandatory,
-  }: Partial<Record<keyof UseCases, { exec: Function }>> = {}) {
+  }: Partial<Record<keyof UseCases, ValueOf<UseCases>>> = {}) {
     this.getAllItems = (getAllItems ||
-      new GetAllItemsCaseDouble()) as unknown as GetAllItemsCase;
-    this.setItemAsRequired = {
-      exec: setItemAsRequired || jest.fn(async () => {}),
-    } as unknown as SetItemAsRequiredCase;
-    this.setItemAsNotRequired = {
-      exec: setItemAsNotRequired || jest.fn(async () => {}),
-    } as unknown as SetItemAsNotRequiredCase;
-    this.setItemAsMandatory = {
-      exec: setItemAsMandatory || jest.fn(async () => {}),
-    } as unknown as SetItemAsMandatoryCase;
-    this.setItemAsNotMandatory = {
-      exec: setItemAsNotMandatory || jest.fn(async () => {}),
-    } as unknown as SetItemAsNotMandatoryCase;
+      new GetAllItemsCaseDouble()) as GetAllItemsCase;
+    this.setItemAsRequired = (setItemAsRequired ||
+      new UseCaseDouble()) as SetItemAsRequiredCase;
+    this.setItemAsNotRequired = (setItemAsNotRequired ||
+      new UseCaseDouble()) as SetItemAsNotRequiredCase;
+    this.setItemAsMandatory = (setItemAsMandatory ||
+      new UseCaseDouble()) as SetItemAsMandatoryCase;
+    this.setItemAsNotMandatory = (setItemAsNotMandatory ||
+      new UseCaseDouble()) as SetItemAsNotMandatoryCase;
   }
 
   static init(): UseCasesBuilder {
@@ -47,9 +46,39 @@ export class UseCasesBuilder {
   }
 
   withGetAllItemsCase(
-    getAllItems: GetAllItemsCase | GetAllItemsCaseDouble
+    getAllItems: GetAllItemsCase | UseCaseDouble
   ): UseCasesBuilder {
     this.getAllItems = getAllItems as GetAllItemsCase;
+    return this;
+  }
+
+  withSetItemAsRequiredCase(
+    setItemAsRequired: SetItemAsRequiredCase | UseCaseDouble
+  ): UseCasesBuilder {
+    this.setItemAsRequired = setItemAsRequired as SetItemAsRequiredCase;
+    return this;
+  }
+
+  withSetItemAsNotRequiredCase(
+    setItemAsNotRequired: SetItemAsNotRequiredCase | UseCaseDouble
+  ): UseCasesBuilder {
+    this.setItemAsNotRequired =
+      setItemAsNotRequired as SetItemAsNotRequiredCase;
+    return this;
+  }
+
+  withSetItemAsMandatoryCase(
+    setItemAsMandatory: SetItemAsMandatoryCase | UseCaseDouble
+  ): UseCasesBuilder {
+    this.setItemAsMandatory = setItemAsMandatory as SetItemAsMandatoryCase;
+    return this;
+  }
+
+  withSetItemAsNotMandatoryCase(
+    setItemAsNotMandatory: SetItemAsNotMandatoryCase | UseCaseDouble
+  ): UseCasesBuilder {
+    this.setItemAsNotMandatory =
+      setItemAsNotMandatory as SetItemAsNotMandatoryCase;
     return this;
   }
 

@@ -8,6 +8,7 @@ import { messages } from "../../../../messages";
 import React from "react";
 import { Groceries } from "./Groceries";
 import { initStore } from "../../store";
+import { UseCaseDouble } from "../../../../tests/doubles/use-case.double";
 
 describe("Groceries view should", () => {
   it("fetch items and render them", async () => {
@@ -64,11 +65,13 @@ describe("Groceries view should", () => {
     ]);
     const [item] = items.getAll();
     const getAllItemsDouble = new GetAllItemsCaseDouble([items, itemsUpdated]);
+    const setItemAsRequired = new UseCaseDouble();
     const useCases = UseCasesBuilder.init()
       .withGetAllItemsCase(getAllItemsDouble)
+      .withSetItemAsRequiredCase(setItemAsRequired)
       .build();
-    render(<Groceries />);
     initStore(useCases);
+    render(<Groceries />);
 
     await waitFor(() => {
       screen.getByTestId(item.id.value);
@@ -79,7 +82,7 @@ describe("Groceries view should", () => {
       )
     );
 
-    expect(useCases.setItemAsRequired.exec).toHaveBeenCalledTimes(1);
+    setItemAsRequired.assertHasBeenCalledTimes(1);
     await waitFor(() => getAllItemsDouble.assertHasBeenCalledTimes(2));
     const firstItemUpdated = screen.getByTestId(item.id.value);
     expect(
@@ -102,12 +105,14 @@ describe("Groceries view should", () => {
     ]);
     const [item] = items.getAll();
     const getAllItemsDouble = new GetAllItemsCaseDouble([items, itemsUpdated]);
+    const setItemAsMandatoryDouble = new UseCaseDouble();
     const useCases = UseCasesBuilder.init()
       .withGetAllItemsCase(getAllItemsDouble)
+      .withSetItemAsMandatoryCase(setItemAsMandatoryDouble)
       .build();
 
-    render(<Groceries />);
     initStore(useCases);
+    render(<Groceries />);
     await waitFor(() => {
       screen.getByTestId(item.id.value);
     });
@@ -117,7 +122,7 @@ describe("Groceries view should", () => {
       )
     );
 
-    expect(useCases.setItemAsMandatory.exec).toHaveBeenCalledTimes(1);
+    setItemAsMandatoryDouble.assertHasBeenCalledTimes(1);
     await waitFor(() => getAllItemsDouble.assertHasBeenCalledTimes(2));
     const firstItemUpdated = screen.getByTestId(item.id.value);
     expect(
@@ -134,13 +139,14 @@ describe("Groceries view should", () => {
       ItemBuilder.init().withName("cream").withIsRequired(false).build(),
     ]);
     const getAllItemsDouble = new GetAllItemsCaseDouble([items]);
-    render(<Groceries />);
     initStore(
       UseCasesBuilder.init().withGetAllItemsCase(getAllItemsDouble).build()
     );
+    render(<Groceries />);
     await waitFor(() => {
       screen.getByLabelText(messages.menu.requiredListCTA);
     });
+
     userEvent.click(screen.getByLabelText(messages.menu.requiredListCTA));
 
     await waitFor(() => {
@@ -176,6 +182,7 @@ describe("Groceries view should", () => {
     await waitFor(() => {
       screen.getByLabelText(messages.menu.mandatoryListCTA);
     });
+
     userEvent.click(screen.getByLabelText(messages.menu.mandatoryListCTA));
 
     await waitFor(() => {

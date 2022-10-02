@@ -1,17 +1,11 @@
 import { FC } from "react";
-import { Id, Item, ItemList } from "../../../../domain";
+import { Item, ItemList } from "../../../../domain";
 import { ListItem } from "../ListItem";
 import "./List.scss";
 import { messages } from "../../../../messages";
 
-type SetItemFunction = (id: Id) => void;
-
 export interface ListProps {
   items: Item[];
-  setItemAsRequired: SetItemFunction;
-  setItemAsNotRequired: SetItemFunction;
-  setItemAsMandatory: SetItemFunction;
-  setItemAsNotMandatory: SetItemFunction;
 }
 
 const EmptyList = () => (
@@ -20,7 +14,7 @@ const EmptyList = () => (
   </div>
 );
 
-export const List: FC<ListProps> = ({ items, ...useCases }) => {
+export const List: FC<ListProps> = ({ items }) => {
   if (items.length === 0) {
     return <EmptyList />;
   }
@@ -32,7 +26,7 @@ export const List: FC<ListProps> = ({ items, ...useCases }) => {
           <ul className="ItemList">
             {items.map((item) => (
               <li key={item.id.value}>
-                <ListItem item={item} {...useCases} />
+                <ListItem item={item} />
               </li>
             ))}
           </ul>
