@@ -11,7 +11,7 @@ export const messages = {
     setItemAsMandatory: "Set item as mandatory to buy",
     setItemAsNotMandatory: "Remove item from mandatory to buy list",
   },
-  emptyList: "There is no items in this list",
+  emptyList: "There are no items in this list",
   search: {
     searchInput: "🔍 Search",
     resetCTA: "Reset your search",
