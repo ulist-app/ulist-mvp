@@ -66,6 +66,22 @@ export function initStore(useCases: UseCases) {
     setSettings(settings: Settings) {
       useCases.setSettings.exec(settings).then((savedSettings) => {
         store.settings = savedSettings;
+        // initStore(
+        //   generateUseCases({
+        //     itemRepository: new ItemRepositoryPouchDB(
+        //       PouchDatasource.createPouchDbBrowser({
+        //         dbName: PouchDatasource.dbName,
+        //         dbUrl: savedSettings.syncUrl,
+        //         cb: () => {
+        //           store.useCases.getAllItems();
+        //         },
+        //       })
+        //     ),
+        //     settingsRepository: new SettingsRepositoryLocalStorage(
+        //       new LocalStorage<Settings>(LocalStorageCollection.Settings)
+        //     ),
+        //   })
+        // );
       });
     },
   };

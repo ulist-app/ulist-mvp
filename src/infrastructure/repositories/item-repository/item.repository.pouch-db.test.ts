@@ -10,7 +10,7 @@ describe("Pouch DB implementation for item repository should", () => {
   let helper: PouchDBTestHelper;
 
   beforeEach(() => {
-    pouchDataSource = PouchDatasource.createPouchDbMemory("test");
+    pouchDataSource = PouchDatasource.createPouchDbMemory({ dbName: "test" });
     helper = new PouchDBTestHelper(pouchDataSource);
   });
 
