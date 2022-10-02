@@ -1,13 +1,13 @@
-import { ItemList } from "../../../domain";
-import { ItemBuilder } from "../../../tests/builders";
-import { GetAllItemsCaseDouble } from "../../../tests/doubles";
+import { ItemList } from "../../../../domain";
+import { ItemBuilder } from "../../../../tests/builders";
+import { GetAllItemsCaseDouble } from "../../../../tests/doubles";
 import { render, screen, waitFor, within } from "@testing-library/react";
-import { UseCasesBuilder } from "../../../tests/builders/use-cases-builder";
+import { UseCasesBuilder } from "../../../../tests/builders/use-cases-builder";
 import userEvent from "@testing-library/user-event";
-import { messages } from "../../../messages";
+import { messages } from "../../../../messages";
 import React from "react";
 import { Groceries } from "./Groceries";
-import { initStore } from "../store";
+import { initStore } from "../../store";
 
 describe("Groceries view should", () => {
   it("fetch items and render them", async () => {

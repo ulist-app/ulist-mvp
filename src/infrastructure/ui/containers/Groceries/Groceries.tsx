@@ -1,9 +1,9 @@
-import { List, Menu, Views } from "../components";
+import { List, Menu, Views } from "../../components";
 import React, { useEffect, useState } from "react";
-import { useGroceriesStore } from "../store";
+import { useStore } from "../../store";
 
 export function Groceries() {
-  const { items, useCases } = useGroceriesStore();
+  const { items, useCases } = useStore();
   const [lastSearch, setLastSearch] = useState("");
   const [view, setView] = useState(Views.All);
 
@@ -12,7 +12,7 @@ export function Groceries() {
   }
 
   useEffect(() => {
-    useCases.getAllItems().catch(console.error);
+    useCases.getAllItems();
   }, [useCases, view]);
 
   return (
