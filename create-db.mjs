@@ -1,12 +1,21 @@
 import PouchDb from "pouchdb";
-import PouchDbMemoryAdapter from "pouchdb-adapter-memory";
-import PouchDbFindPlugin from "pouchdb-find";
 import {remoteDbUrl} from "./secret.mjs";
 
-PouchDb.plugin(PouchDbMemoryAdapter);
-PouchDb.plugin(PouchDbFindPlugin);
+/**
+ * @param {object[]} docs
+ */
+function createGroceriesDatabase(docs) {
+  new PouchDb(remoteDbUrl + "/groceries")
+    .bulkDocs(docs)
+    .then(function (result) {
+      console.log("success", result);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+}
 
-export const pouchItems = [
+const pouchItems = [
   {
     id: "d1043515-21da-4de2-b410-9eb2cae2e813",
     _id: "d1043515-21da-4de2-b410-9eb2cae2e813",
@@ -3278,7 +3287,8 @@ export const pouchItems = [
     type: "item",
   },
 ];
-export const pouchCategories = [
+
+const pouchCategories = [
   {
     id: "d5559a99-e75c-4ab6-a334-ff4099e6f628",
     _id: "d5559a99-e75c-4ab6-a334-ff4099e6f628",
@@ -3400,70 +3410,4 @@ export const pouchCategories = [
   },
 ];
 
-export class PouchDatasource {
-  static DocumentTypes = {
-    Item: "item",
-    Category: "category",
-  };
-  static dbName = "groceries";
-
-  constructor(db) {
-    this.db = db
-  }
-
-  static createPouchDbBrowser(params) {
-    return PouchDatasource.createPouchDb({...params});
-  }
-
-  static createPouchDbMemory(params) {
-    return PouchDatasource.createPouchDb({
-      ...params,
-      options: {adapter: "memory"},
-    });
-  }
-
-  static createPouchDb({
-                         dbName,
-                         dbUrl,
-                         cb,
-                         options,
-                       }) {
-    const remoteDb = `${dbUrl}/${dbName}`;
-    if (dbUrl && cb) {
-      PouchDb.sync(dbName, remoteDb, {
-        live: true,
-        retry: true,
-      })
-        .on("error", (error) => {
-          console.error("[SYNC ERROR]", error.toString());
-        })
-        .on("active", () => {
-          console.debug("[SYNC ACTIVE]");
-        })
-        .on("change", (info) => {
-          console.debug("[SYNC CHANGES]", JSON.stringify(info, null, 2));
-          cb();
-        })
-        .on("complete", (info) => {
-          console.debug("[SYNC COMPLETE]", JSON.stringify(info, null, 2));
-          cb();
-        });
-    }
-    return options
-      ? new PouchDatasource(new PouchDb(dbName, options))
-      : new PouchDatasource(new PouchDb(dbName));
-  }
-}
-
-const dataSource = PouchDatasource.createPouchDb({
-  dbName: remoteDbUrl + "/" + PouchDatasource.dbName ,
-});
-
-dataSource.db
-  .bulkDocs([...pouchCategories, ...pouchItems])
-  .then(function (result) {
-    console.log("success", result);
-  })
-  .catch(function (err) {
-    console.log(err);
-  });
+createGroceriesDatabase([...pouchCategories, ...pouchItems]);
