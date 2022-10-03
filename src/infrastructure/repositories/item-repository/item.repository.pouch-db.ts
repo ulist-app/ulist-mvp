@@ -70,7 +70,6 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   }
 
   async findAll(): Promise<ItemList> {
-    console.debug("[FIND ALL ITEMS]");
     const documents = await this.pouch.db.allDocs<
       PouchDBItem | PouchDBCategory
     >({ include_docs: true });
@@ -80,7 +79,6 @@ export class ItemRepositoryPouchDB implements ItemRepository {
     const { categories, items } = this.groupDocumentsByType(documents);
     const categoryDictionary =
       ItemRepositoryPouchDB.generateCategoryDictionary(categories);
-    console.debug("cateog", categoryDictionary, categories);
     return new ItemList(
       items.map((item) => {
         const category = categoryDictionary[item.category];
