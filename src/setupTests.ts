@@ -12,3 +12,6 @@ window.setImmediate = (fn) => {
 window.process.nextTick = (fn) => {
   setTimeout(fn, 0);
 };
+
+console.log = () => {};
+console.error = () => {};
