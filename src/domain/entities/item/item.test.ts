@@ -2,7 +2,7 @@ import { Category, defaultCategory } from "../category";
 import { Id } from "../id";
 import { Item } from "./item";
 
-describe("ListItem should", () => {
+describe("Item should", () => {
   const itemParams = {
     id: new Id(),
     name: "irrelevant-item",
