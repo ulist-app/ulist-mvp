@@ -8,7 +8,7 @@ import { ItemCRUD } from "../views/ItemCRUD";
 import { SettingsCRUD } from "../views/SettingsCRUD";
 
 function App() {
-  const [match] = useRoute("/");
+  const [match] = useRoute("/ulist-mvp");
   useEffect(() => {
     initStore();
   }, []);
