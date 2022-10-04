@@ -103,7 +103,7 @@ export class ItemRepositoryPouchDB implements ItemRepository {
   private groupDocumentsByType(
     documents: PouchDB.Core.AllDocsResponse<PouchDBItem | PouchDBCategory>
   ) {
-    const { categories, items } = documents.rows.reduce(
+    return documents.rows.reduce(
       (result, { doc }) => {
         // @ts-ignore
         if (doc.type === PouchDatasource.DocumentTypes.Category) {
@@ -119,7 +119,6 @@ export class ItemRepositoryPouchDB implements ItemRepository {
       },
       { categories: [] as PouchDBCategory[], items: [] as PouchDBItem[] }
     );
-    return { categories, items };
   }
 
   private async findCategory(id: string): Promise<Category> {
