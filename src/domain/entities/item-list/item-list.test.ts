@@ -71,4 +71,15 @@ describe("Item List should", () => {
       [categoryB.name, [items.at(0)]],
     ]);
   });
+
+  it("find item by id", () => {
+    const items = [
+      ItemBuilder.random(),
+      ItemBuilder.random(),
+      ItemBuilder.random(),
+    ];
+    const item = items.at(1);
+
+    expect(new ItemList(items).findById(item!.id)).toStrictEqual(item);
+  });
 });

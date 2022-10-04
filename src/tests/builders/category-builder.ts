@@ -14,12 +14,21 @@ export class CategoryBuilder {
     this.color = color || faker.color.rgb({ prefix: "#", casing: "lower" });
   }
 
+  static init(): CategoryBuilder {
+    return new CategoryBuilder();
+  }
+
   static clone(category: Category): CategoryBuilder {
     return new CategoryBuilder({ ...category });
   }
 
   static random(): Category {
     return new CategoryBuilder().build();
+  }
+
+  witName(name: string): CategoryBuilder {
+    this.name = name;
+    return this;
   }
 
   withRevision(_rev?: string): CategoryBuilder {
