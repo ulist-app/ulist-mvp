@@ -40,14 +40,14 @@ export function initStore(useCases = generateUseCasesWithLocalDb()) {
   store.items = new ItemList([]);
   useCases.getSettings.exec().then((settings) => {
     if (settings.syncUrl) {
-      console.debug("[INIT STORE]: REMOTE DB");
+      console.log("[INIT STORE]: REMOTE DB");
       store.settings = settings;
       store.actions = generateActions(
         store,
         generateUseCasesWithRemoteDb(settings, store.actions.getAllItems)
       );
     } else {
-      console.debug("[INIT STORE]: LOCAL DB");
+      console.log("[INIT STORE]: LOCAL DB");
       store.actions = generateActions(store, useCases);
     }
   });
