@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import "./App.scss";
 import { palette } from "../../../domain";
 import { initStore } from "../store";
-import { Groceries } from "../containers";
 import { Link, Route, Router, useRoute } from "wouter";
-import { ItemCRUD } from "../views/ItemCRUD";
-import { SettingsCRUD } from "../views/SettingsCRUD";
+import { Groceries, ItemCRUD, SettingsCRUD } from "../views";
 
 function App() {
   const [match] = useRoute("/ulist-mvp");

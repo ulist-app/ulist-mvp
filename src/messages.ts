@@ -17,4 +17,10 @@ export const messages = {
     resetCTA: "Reset your search",
     closeCTA: "Close search",
   },
+  settings: {
+    syncUrlInputLabel:
+      "Add your CouchDB url for syncing your data across devices.",
+    syncUrlInput: "Set your database url",
+    submitButton: "Save settings",
+  },
 };

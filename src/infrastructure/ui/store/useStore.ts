@@ -41,6 +41,7 @@ export function initStore(useCases = generateUseCasesWithLocalDb()) {
   useCases.getSettings.exec().then((settings) => {
     if (settings.syncUrl) {
       console.debug("[INIT STORE]: REMOTE DB");
+      store.settings = settings;
       store.actions = generateActions(
         store,
         generateUseCasesWithRemoteDb(settings, store.actions.getAllItems)

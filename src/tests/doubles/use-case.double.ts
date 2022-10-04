@@ -7,7 +7,7 @@ export class UseCaseDouble<R = any> implements UseCase<any, Promise<R>> {
   constructor(private readonly onExec = [] as Array<R>) {}
 
   async exec(input: void): Promise<R> {
-    this.execSpy();
+    this.execSpy(input);
     this.execCount++;
     if (this.execCount > this.onExec.length - 1) {
       this.execCount = 0;
@@ -17,6 +17,10 @@ export class UseCaseDouble<R = any> implements UseCase<any, Promise<R>> {
 
   assertHasBeenCalled() {
     expect(this.execSpy).toHaveBeenCalled();
+  }
+
+  assertHasBeenCalledWith(...args: any[]) {
+    expect(this.execSpy).toHaveBeenCalledWith(...args);
   }
 
   assertHasBeenCalledTimes(times: number) {

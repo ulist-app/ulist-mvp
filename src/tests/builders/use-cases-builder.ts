@@ -35,7 +35,9 @@ export class UseCasesBuilder {
     this.getAllItems = (getAllItems ||
       new GetAllItemsCaseDouble()) as GetAllItemsCase;
     this.getSettings = (getSettings ||
-      new UseCaseDouble([SettingsBuilder.random()])) as GetSettingsCase;
+      new UseCaseDouble([
+        SettingsBuilder.init().withSyncUrl(undefined).build(),
+      ])) as GetSettingsCase;
     this.setItemAsRequired = (setItemAsRequired ||
       new UseCaseDouble()) as SetItemAsRequiredCase;
     this.setItemAsNotRequired = (setItemAsNotRequired ||
@@ -44,8 +46,7 @@ export class UseCasesBuilder {
       new UseCaseDouble()) as SetItemAsMandatoryCase;
     this.setItemAsNotMandatory = (setItemAsNotMandatory ||
       new UseCaseDouble()) as SetItemAsNotMandatoryCase;
-    this.setSettings = (setSettings ||
-      new UseCaseDouble([{}])) as SetSettingsCase;
+    this.setSettings = (setSettings || new UseCaseDouble()) as SetSettingsCase;
   }
 
   static init(): UseCasesBuilder {
@@ -60,6 +61,13 @@ export class UseCasesBuilder {
     getAllItems: GetAllItemsCase | UseCaseDouble
   ): UseCasesBuilder {
     this.getAllItems = getAllItems as GetAllItemsCase;
+    return this;
+  }
+
+  withGetSettingsCase(
+    getSettings: GetSettingsCase | UseCaseDouble
+  ): UseCasesBuilder {
+    this.getSettings = getSettings as GetSettingsCase;
     return this;
   }
 
@@ -90,6 +98,13 @@ export class UseCasesBuilder {
   ): UseCasesBuilder {
     this.setItemAsNotMandatory =
       setItemAsNotMandatory as SetItemAsNotMandatoryCase;
+    return this;
+  }
+
+  withSetSettingsCase(
+    setSettings: SetSettingsCase | UseCaseDouble
+  ): UseCasesBuilder {
+    this.setSettings = setSettings as SetSettingsCase;
     return this;
   }
 
