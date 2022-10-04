@@ -7,6 +7,10 @@ export class Id {
     this.value = id;
   }
 
+  equals(id: Id): boolean {
+    return this.value === id.value;
+  }
+
   toString() {
     return this.value;
   }
