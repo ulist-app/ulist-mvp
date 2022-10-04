@@ -21,6 +21,7 @@
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-error-overlay": "^6.0.9",
     "react-icons": "^4.4.0",
     "react-scripts": "^4.0.3",
     "react-transition-group": "^4.4.5",
@@ -40,7 +41,7 @@
     "test:watch": "react-scripts test --verbose",
     "test:coverage": "npm t -- --coverage",
     "test:db": "docker-compose -f src/infrastructure/docker-compose.yml up -d ",
-    "sync:db": "node create-db.mjsx",
+    "sync:db": "node create-db.mjs",
     "linter:fix": "eslint --fix src",
     "eject": "react-scripts eject"
   },
@@ -90,5 +91,8 @@
       "!src/reportWebVitals.ts",
       "!<rootDir>/node_modules/"
     ]
+  },
+  "overrides": {
+    "react-error-overlay": "6.0.9"
   }
 }
